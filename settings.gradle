@@ -1,6 +1,6 @@
 rootProject.name = "Nohrd Bike Android SDK"
 
-include ":bike"
+include ":sdk"
 
-include ":bike-android"
-project(":bike-android").projectDir = file("bike/android")
+include ":sdk-protocol"
+project(":sdk-protocol").projectDir = file("sdk/protocol")
