@@ -1,0 +1,45 @@
+buildscript {
+    ext.kotlinVersion = "1.4.10"
+    repositories {
+        mavenCentral()
+        google()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
+        classpath "com.adarshr:gradle-test-logger-plugin:2.1.1"
+
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.36.0"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
+    }
+}
+
+apply from: "${rootProject.projectDir.absolutePath}/.ops/dependencyUpdates.gradle"
+
+allprojects {
+    apply plugin: "io.spring.dependency-management"
+
+    apply from: "$rootDir/.ops/git.gradle"
+    apply from: "$rootDir/dependencies.gradle"
+
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+    }
+
+    afterEvaluate {
+        if (hasProperty("test") || hasProperty("android")) {
+            apply from: "$rootDir/.ops/testing.gradle"
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+println("Version ${git.versionName()}")

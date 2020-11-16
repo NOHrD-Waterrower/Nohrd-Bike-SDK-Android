@@ -1,0 +1,8 @@
+apply plugin: "java-library"
+apply plugin: "kotlin"
+
+dependencies {
+    testImplementation "com.nhaarman:expect.kt"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+}

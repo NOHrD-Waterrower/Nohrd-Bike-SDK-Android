@@ -1,0 +1,17 @@
+**/build/*
+.gradle
+**/local.properties
+
+.idea/*
+
+!/.idea/codeStyles
+!/.idea/dictionaries
+!/.idea/encodings.xml
+!/.idea/icon_dark.png
+!/.idea/inspectionProfiles
+!/.idea/runConfigurations
+!/.idea/vcs.xml
+
+.projectFilesBackup
+*.hprof
+*.DS_Store
