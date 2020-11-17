@@ -1,8 +1,8 @@
 package com.nohrd.bike.sdk.internal.protocol
 
-import com.nhaarman.expect.ListMatcher
 import com.nhaarman.expect.expect
 import com.nhaarman.expect.expectErrorWithMessage
+import com.nohrd.bike.sdk.internal.toBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -387,9 +387,5 @@ internal class BikeProtocolTest {
                 )
             }
         }
-    }
-
-    private fun <T> ListMatcher<T>.toBe(vararg elements: T) {
-        toBe(elements.toList())
     }
 }
