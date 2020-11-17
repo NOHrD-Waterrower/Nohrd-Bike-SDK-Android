@@ -1,6 +1,3 @@
 rootProject.name = "Nohrd Bike Android SDK"
 
 include ":sdk"
-
-include ":sdk-protocol"
-project(":sdk-protocol").projectDir = file("sdk/protocol")
