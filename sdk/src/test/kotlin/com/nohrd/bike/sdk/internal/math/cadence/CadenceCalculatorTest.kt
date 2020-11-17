@@ -2,6 +2,7 @@ package com.nohrd.bike.sdk.internal.math.cadence
 
 import com.nhaarman.expect.expect
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.revolutionsPerSecond
+import com.nohrd.bike.sdk.rpm
 import org.junit.jupiter.api.Test
 
 internal class CadenceCalculatorTest {

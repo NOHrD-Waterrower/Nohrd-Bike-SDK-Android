@@ -30,12 +30,6 @@ allprojects {
         google()
         jcenter()
     }
-
-    afterEvaluate {
-        if (hasProperty("test") || hasProperty("android")) {
-            apply from: "$rootDir/.ops/testing.gradle"
-        }
-    }
 }
 
 task clean(type: Delete) {
