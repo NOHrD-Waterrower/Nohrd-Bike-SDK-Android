@@ -5,10 +5,14 @@ import com.nohrd.bike.sdk.internal.bytes
 import com.nohrd.bike.sdk.internal.cadence
 import com.nohrd.bike.sdk.internal.dataPackets
 import com.nohrd.bike.sdk.internal.flywheelFrequency
+import com.nohrd.bike.sdk.internal.resistance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 /**
@@ -20,6 +24,7 @@ import kotlinx.coroutines.launch
  */
 class NohrdBike internal constructor(
     private val bytesReader: BytesReader,
+    private val calibration: Calibration,
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO),
 ) {
 
@@ -36,6 +41,14 @@ class NohrdBike internal constructor(
          * for a significant time.
          */
         fun onCadence(cadence: Cadence?)
+
+        /**
+         * Invoked when the resistance changes.
+         *
+         * @param resistance A corrected resistance value, based
+         * on the calibration.
+         */
+        fun onResistance(resistance: Resistance)
     }
 
     private var listeners = listOf<Listener>()
@@ -77,10 +90,30 @@ class NohrdBike internal constructor(
         job = scope.launch {
             val bytes = bytesReader.bytes()
             val dataPackets = bytes.dataPackets()
+                .shareIn(scope, SharingStarted.WhileSubscribed())
+
             val flywheelFrequency = dataPackets.flywheelFrequency()
             val cadence = flywheelFrequency.cadence()
+            val resistance = dataPackets.resistance(calibration)
 
-            cadence.collect { value -> listeners.forEach { it.onCadence(value) } }
+            launch { collectCadence(cadence) }
+            launch { collectResistance(resistance) }
+        }
+    }
+
+    private suspend fun collectCadence(cadence: Flow<Cadence?>) {
+        cadence.collect { value ->
+            listeners.forEach {
+                it.onCadence(value)
+            }
+        }
+    }
+
+    private suspend fun collectResistance(resistance: Flow<Resistance>) {
+        resistance.collect { value ->
+            listeners.forEach {
+                it.onResistance(value)
+            }
         }
     }
 
