@@ -14,9 +14,9 @@ import kotlinx.coroutines.launch
 /**
  * The main class in this SDK that computes cycling data.
  *
- * To obtain cycling data an instance of [Listener] registered, after which
- * computation starts automatically. When all [Listener] instance are gone,
- * computation stops.
+ * To obtain cycling data an instance of [Listener] must be registered,
+ * after which computation starts automatically.
+ * When all [Listener] instance are gone computation stops.
  */
 class NohrdBike internal constructor(
     private val bytesReader: BytesReader,
@@ -29,7 +29,13 @@ class NohrdBike internal constructor(
      */
     interface Listener {
 
-        fun onCadence(cadence: Cadence)
+        /**
+         * Invoked when the cadence changes.
+         *
+         * @param cadence `null` when there has been no data
+         * for a significant time.
+         */
+        fun onCadence(cadence: Cadence?)
     }
 
     private var listeners = listOf<Listener>()
