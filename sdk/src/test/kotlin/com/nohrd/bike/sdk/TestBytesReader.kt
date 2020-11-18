@@ -1,5 +1,6 @@
 package com.nohrd.bike.sdk
 
+import com.nohrd.bike.sdk.internal.protocol.ResistancePacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.TimeUnit
@@ -26,6 +27,18 @@ internal class TestBytesReader : BytesReader {
                 0b0001_0000,
                 (speedPacket.numberOfTicksPerRevolution shr 8).toByte(),
                 (speedPacket.numberOfTicksPerRevolution and 0xF).toByte(),
+                13,
+                10
+            )
+        )
+    }
+
+    fun append(resistancePacket: ResistancePacket) {
+        queue.add(
+            byteArrayOf(
+                0b0010_0000,
+                (resistancePacket.value shr 8).toByte(),
+                (resistancePacket.value and 0xF).toByte(),
                 13,
                 10
             )

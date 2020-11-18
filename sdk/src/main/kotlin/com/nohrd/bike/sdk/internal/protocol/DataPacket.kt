@@ -1,15 +1,10 @@
 package com.nohrd.bike.sdk.internal.protocol
 
-import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelMeasurement
-
 internal sealed class DataPacket
 
 internal data class SpeedPacket(
     val numberOfTicksPerRevolution: Int,
-) : DataPacket() {
-
-    val flywheelMeasurement = FlywheelMeasurement(numberOfTicksPerRevolution)
-}
+) : DataPacket()
 
 internal data class ResistancePacket(
     val value: Int,

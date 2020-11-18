@@ -2,6 +2,7 @@ package com.nohrd.bike.sdk.internal
 
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequencyCalculator
+import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelMeasurement
 import com.nohrd.bike.sdk.internal.protocol.DataPacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,6 +23,9 @@ internal fun Flow<DataPacket>.flywheelFrequency(
         .map { calculator.offer(it.flywheelMeasurement) }
         .flatMapLatest { value -> cadenceWithTimeoutFor(value, dispatcher) }
 }
+
+private val SpeedPacket.flywheelMeasurement
+    get() = FlywheelMeasurement(numberOfTicksPerRevolution)
 
 private fun cadenceWithTimeoutFor(
     value: FlywheelFrequency,

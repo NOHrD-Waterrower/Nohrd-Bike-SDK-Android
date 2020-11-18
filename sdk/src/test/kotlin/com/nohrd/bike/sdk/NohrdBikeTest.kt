@@ -6,7 +6,9 @@ import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.timeout
 import com.nhaarman.mockitokotlin2.verify
+import com.nohrd.bike.sdk.internal.protocol.ResistancePacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class NohrdBikeTest {
@@ -14,46 +16,72 @@ class NohrdBikeTest {
     private val bytesReader = TestBytesReader()
     private val listener = mock<NohrdBike.Listener>()
 
-    private val bike = NohrdBike(bytesReader)
+    private val bike = NohrdBike(
+        bytesReader,
+        Calibration(
+            lowValue = ResistanceMeasurement(100),
+            highValue = ResistanceMeasurement(900)
+        )
+    )
 
-    @Test
-    fun `a speed packet without listeners doesn't invoke the listener`() {
-        /* When */
-        bytesReader.append(SpeedPacket(400))
+    @Nested
+    inner class Lifecycle {
 
-        /* Then */
-        verify(listener, after(100).never()).onCadence(any())
+        @Test
+        fun `a speed packet without listeners doesn't invoke the listener`() {
+            /* When */
+            bytesReader.append(SpeedPacket(400))
+
+            /* Then */
+            verify(listener, after(100).never()).onCadence(any())
+        }
+
+        @Test
+        fun `a speed packet after cancelled listener doesn't invoke listener`() {
+            /* Given */
+            val cancellable = bike.registerListener(listener)
+            val inOrder = inOrder(listener)
+
+            /* When */
+            bytesReader.append(SpeedPacket(400))
+
+            /* Then */
+            inOrder.verify(listener, timeout(100)).onCadence(any())
+
+            /* When */
+            cancellable.cancel()
+            bytesReader.append(SpeedPacket(400))
+
+            /* Then */
+            inOrder.verifyNoMoreInteractions()
+        }
     }
 
-    @Test
-    fun `a speed packet invokes callback with cadence`() {
-        /* Given */
-        bike.registerListener(listener)
+    @Nested
+    inner class `Callback invocation` {
 
-        /* When */
-        bytesReader.append(SpeedPacket(400))
+        @Test
+        fun `a speed packet invokes callback with cadence`() {
+            /* Given */
+            bike.registerListener(listener)
 
-        /* Then */
-        verify(listener, timeout(100).atLeastOnce()).onCadence(any())
-    }
+            /* When */
+            bytesReader.append(SpeedPacket(400))
 
-    @Test
-    fun `a speed packet after cancelled listener doesn't invoke listener`() {
-        /* Given */
-        val cancellable = bike.registerListener(listener)
-        val inOrder = inOrder(listener)
+            /* Then */
+            verify(listener, timeout(100).atLeastOnce()).onCadence(any())
+        }
 
-        /* When */
-        bytesReader.append(SpeedPacket(400))
+        @Test
+        fun `a resistance packet invokes callback with resistance`() {
+            /* Given */
+            bike.registerListener(listener)
 
-        /* Then */
-        inOrder.verify(listener, timeout(100)).onCadence(any())
+            /* When */
+            bytesReader.append(ResistancePacket(500))
 
-        /* When */
-        cancellable.cancel()
-        bytesReader.append(SpeedPacket(400))
-
-        /* Then */
-        inOrder.verifyNoMoreInteractions()
+            /* Then */
+            verify(listener, timeout(100).atLeastOnce()).onResistance(any())
+        }
     }
 }
