@@ -3,13 +3,11 @@ package com.nohrd.bike.sdk
 import com.nhaarman.expect.expect
 import com.nohrd.bike.sdk.internal.toBe
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class TestBytesReaderTest {
 
     private val reader = TestBytesReader()

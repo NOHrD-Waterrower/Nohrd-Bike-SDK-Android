@@ -3,12 +3,11 @@ package com.nohrd.bike.sdk.internal
 import app.cash.turbine.test
 import com.nhaarman.expect.expect
 import com.nohrd.bike.sdk.TestBytesReader
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalTime::class)
 internal class BytesFlowKtTest {
 
     private val bytesReader = TestBytesReader()

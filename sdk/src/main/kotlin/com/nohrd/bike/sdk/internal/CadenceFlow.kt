@@ -6,7 +6,10 @@ import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal fun Flow<FlywheelFrequency>.cadence(): Flow<Cadence> {
+internal fun Flow<FlywheelFrequency?>.cadence(): Flow<Cadence?> {
     val calculator = CadenceCalculator()
-    return map { calculator.calculate(it) }
+    return map {
+        if (it == null) null
+        else calculator.calculate(it)
+    }
 }
