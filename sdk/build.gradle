@@ -1,6 +1,12 @@
 apply plugin: "java-library"
 apply plugin: "kotlin"
 
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xinline-classes"]
+    }
+}
+
 dependencies {
     testImplementation "com.nhaarman:expect.kt"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
