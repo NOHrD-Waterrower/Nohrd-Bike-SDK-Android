@@ -1,14 +1,22 @@
 apply plugin: "java-library"
 apply plugin: "kotlin"
 
+apply from: "$rootDir/.ops/testing.gradle"
+
 compileKotlin {
     kotlinOptions {
-        freeCompilerArgs = ["-Xinline-classes"]
+        freeCompilerArgs += "-Xinline-classes"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
     }
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+
+    testImplementation "app.cash.turbine:turbine"
     testImplementation "com.nhaarman:expect.kt"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testRuntime "org.junit.jupiter:junit-jupiter-engine"
 }
