@@ -8,6 +8,10 @@ import com.nhaarman.mockitokotlin2.timeout
 import com.nhaarman.mockitokotlin2.verify
 import com.nohrd.bike.sdk.internal.protocol.ResistancePacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -16,13 +20,20 @@ class NohrdBikeTest {
     private val bytesReader = TestBytesReader()
     private val listener = mock<NohrdBike.Listener>()
 
+    private val scope = CoroutineScope(Dispatchers.IO)
     private val bike = NohrdBike(
         bytesReader,
         Calibration(
             lowValue = ResistanceMeasurement(100),
             highValue = ResistanceMeasurement(900)
-        )
+        ),
+        scope
     )
+
+    @AfterEach
+    fun afterEach() {
+        scope.cancel()
+    }
 
     @Nested
     inner class Lifecycle {
@@ -46,7 +57,7 @@ class NohrdBikeTest {
             bytesReader.append(SpeedPacket(400))
 
             /* Then */
-            inOrder.verify(listener, timeout(100)).onCadence(any())
+            inOrder.verify(listener, timeout(1000)).onCadence(any())
 
             /* When */
             cancellable.cancel()
@@ -69,7 +80,20 @@ class NohrdBikeTest {
             bytesReader.append(SpeedPacket(400))
 
             /* Then */
-            verify(listener, timeout(100).atLeastOnce()).onCadence(any())
+            verify(listener, timeout(1000).atLeastOnce()).onCadence(any())
+        }
+
+        @Test
+        fun `a speed and a resistance packet invokes callback with power`() {
+            /* Given */
+            bike.registerListener(listener)
+
+            /* When */
+            bytesReader.append(SpeedPacket(400))
+            bytesReader.append(ResistancePacket(500))
+
+            /* Then */
+            verify(listener, timeout(1000).atLeastOnce()).onPower(any())
         }
 
         @Test
@@ -81,7 +105,7 @@ class NohrdBikeTest {
             bytesReader.append(ResistancePacket(500))
 
             /* Then */
-            verify(listener, timeout(100).atLeastOnce()).onResistance(any())
+            verify(listener, timeout(1000).atLeastOnce()).onResistance(any())
         }
     }
 }
