@@ -5,6 +5,7 @@ import com.nohrd.bike.sdk.internal.bytes
 import com.nohrd.bike.sdk.internal.cadence
 import com.nohrd.bike.sdk.internal.dataPackets
 import com.nohrd.bike.sdk.internal.flywheelFrequency
+import com.nohrd.bike.sdk.internal.power
 import com.nohrd.bike.sdk.internal.resistance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,13 @@ class NohrdBike internal constructor(
          * for a significant time.
          */
         fun onCadence(cadence: Cadence?)
+
+        /**
+         * Invoked when the power changes.
+         *
+         * @param power `null` when there has been no data for a significant time.
+         */
+        fun onPower(power: Power?)
 
         /**
          * Invoked when the resistance changes.
@@ -93,10 +101,17 @@ class NohrdBike internal constructor(
                 .shareIn(scope, SharingStarted.WhileSubscribed())
 
             val flywheelFrequency = dataPackets.flywheelFrequency()
+                .shareIn(scope, SharingStarted.WhileSubscribed())
+
             val cadence = flywheelFrequency.cadence()
+
             val resistance = dataPackets.resistance(calibration)
+                .shareIn(scope, SharingStarted.WhileSubscribed())
+
+            val power = power(flywheelFrequency, resistance)
 
             launch { collectCadence(cadence) }
+            launch { collectPower(power) }
             launch { collectResistance(resistance) }
         }
     }
@@ -105,6 +120,14 @@ class NohrdBike internal constructor(
         cadence.collect { value ->
             listeners.forEach {
                 it.onCadence(value)
+            }
+        }
+    }
+
+    private suspend fun collectPower(power: Flow<Power?>) {
+        power.collect { value ->
+            listeners.forEach {
+                it.onPower(value)
             }
         }
     }
