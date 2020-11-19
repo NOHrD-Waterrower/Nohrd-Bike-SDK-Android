@@ -15,7 +15,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-class NohrdBikeTest {
+internal class NohrdBikeTest {
 
     private val bytesReader = TestBytesReader()
     private val listener = mock<NohrdBike.Listener>()
@@ -121,6 +121,19 @@ class NohrdBikeTest {
 
             /* Then */
             verify(listener, timeout(1000).atLeastOnce()).onResistance(any())
+        }
+
+        @Test
+        fun `a speed and resistance packet invokes callback with speed`() {
+            /* Given */
+            bike.registerListener(listener)
+
+            /* When */
+            bytesReader.append(SpeedPacket(400))
+            bytesReader.append(ResistancePacket(500))
+
+            /* Then */
+            verify(listener, timeout(1000).atLeastOnce()).onSpeed(any())
         }
     }
 }
