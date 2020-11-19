@@ -4,6 +4,7 @@ import com.nohrd.bike.sdk.NohrdBike.Listener
 import com.nohrd.bike.sdk.internal.bytes
 import com.nohrd.bike.sdk.internal.cadence
 import com.nohrd.bike.sdk.internal.dataPackets
+import com.nohrd.bike.sdk.internal.distance
 import com.nohrd.bike.sdk.internal.flywheelFrequency
 import com.nohrd.bike.sdk.internal.power
 import com.nohrd.bike.sdk.internal.resistance
@@ -43,6 +44,14 @@ public class NohrdBike internal constructor(
          * for a significant time.
          */
         public fun onCadence(cadence: Cadence?)
+
+        /**
+         * Invoked when given [distance] was traveled.
+         *
+         * Distance values denote the distance traveled since the last value.
+         * For total traveled distance, these values will need to be accumulated.
+         */
+        public fun onDistance(distance: Distance)
 
         /**
          * Invoked when energy was expended.
@@ -128,8 +137,12 @@ public class NohrdBike internal constructor(
 
             val energy = energy(power)
             val speed = speed(power)
+                .shareIn(scope, SharingStarted.WhileSubscribed())
+
+            val distance = distance(speed)
 
             launch { collectCadence(cadence) }
+            launch { collectDistance(distance) }
             launch { collectEnergy(energy) }
             launch { collectPower(power) }
             launch { collectResistance(resistance) }
@@ -141,6 +154,14 @@ public class NohrdBike internal constructor(
         cadence.collect { value ->
             listeners.forEach {
                 it.onCadence(value)
+            }
+        }
+    }
+
+    private suspend fun collectDistance(distance: Flow<Distance>) {
+        distance.collect { value ->
+            listeners.forEach {
+                it.onDistance(value)
             }
         }
     }
