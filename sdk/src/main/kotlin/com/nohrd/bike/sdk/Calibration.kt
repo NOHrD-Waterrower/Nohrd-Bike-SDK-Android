@@ -1,6 +1,6 @@
 package com.nohrd.bike.sdk
 
-data class Calibration(
+public data class Calibration(
     val lowValue: ResistanceMeasurement,
     val highValue: ResistanceMeasurement,
 )

@@ -4,7 +4,7 @@ package com.nohrd.bike.sdk
  * Clients of Nohrd Bike Android SDK should implement this interface
  * to provide data from a Bike connection to the SDK.
  */
-interface BytesReader {
+public interface BytesReader {
 
     /**
      * Reads a number of bytes from the source machine and
@@ -14,5 +14,5 @@ interface BytesReader {
      *
      * @return the number of bytes read.
      */
-    fun read(buffer: ByteArray): Int
+    public fun read(buffer: ByteArray): Int
 }

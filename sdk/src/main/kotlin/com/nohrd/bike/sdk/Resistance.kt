@@ -6,11 +6,11 @@ package com.nohrd.bike.sdk
  * @param value A value in (0f, 1f), where 0f denotes the
  * lowest resistance, and 1f the highest resistance value.
  */
-class Resistance private constructor(val value: Float) {
+public class Resistance private constructor(public val value: Float) {
 
-    companion object {
+    public companion object {
 
-        fun from(fraction: Float): Resistance {
+        public fun from(fraction: Float): Resistance {
             return Resistance(fraction.coerceIn(0f, 1f))
         }
     }

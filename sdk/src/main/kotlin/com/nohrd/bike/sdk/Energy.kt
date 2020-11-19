@@ -1,6 +1,6 @@
 package com.nohrd.bike.sdk
 
-data class Energy(val joules: Double)
+public data class Energy(val joules: Double)
 
-val Double.joules get() = Energy(this)
-val Int.joules get() = toDouble().joules
+public val Double.joules: Energy get() = Energy(this)
+public val Int.joules: Energy get() = toDouble().joules

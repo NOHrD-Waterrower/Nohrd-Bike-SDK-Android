@@ -1,6 +1,6 @@
 package com.nohrd.bike.sdk
 
-data class Power(val watts: Double)
+public data class Power(val watts: Double)
 
-inline val Double.watts get() = Power(this)
-inline val Int.watts get() = toDouble().watts
+public inline val Double.watts: Power get() = Power(this)
+public inline val Int.watts: Power get() = toDouble().watts
