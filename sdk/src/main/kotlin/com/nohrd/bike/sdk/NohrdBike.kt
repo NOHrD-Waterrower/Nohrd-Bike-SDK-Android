@@ -7,6 +7,7 @@ import com.nohrd.bike.sdk.internal.dataPackets
 import com.nohrd.bike.sdk.internal.flywheelFrequency
 import com.nohrd.bike.sdk.internal.power
 import com.nohrd.bike.sdk.internal.resistance
+import com.nohrd.bike.sdk.internal.speed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -66,6 +67,11 @@ public class NohrdBike internal constructor(
          * on the calibration.
          */
         public fun onResistance(resistance: Resistance)
+
+        /**
+         * Invoked when the speed changes.
+         */
+        public fun onSpeed(speed: Speed?)
     }
 
     private var listeners = listOf<Listener>()
@@ -118,13 +124,16 @@ public class NohrdBike internal constructor(
                 .shareIn(scope, SharingStarted.WhileSubscribed())
 
             val power = power(flywheelFrequency, resistance)
+                .shareIn(scope, SharingStarted.WhileSubscribed())
 
             val energy = energy(power)
+            val speed = speed(power)
 
             launch { collectCadence(cadence) }
             launch { collectEnergy(energy) }
             launch { collectPower(power) }
             launch { collectResistance(resistance) }
+            launch { collectSpeed(speed) }
         }
     }
 
@@ -156,6 +165,14 @@ public class NohrdBike internal constructor(
         resistance.collect { value ->
             listeners.forEach {
                 it.onResistance(value)
+            }
+        }
+    }
+
+    private suspend fun collectSpeed(speed: Flow<Speed?>) {
+        speed.collect { value ->
+            listeners.forEach {
+                it.onSpeed(value)
             }
         }
     }
