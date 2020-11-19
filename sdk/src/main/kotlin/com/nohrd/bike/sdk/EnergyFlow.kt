@@ -9,7 +9,6 @@ internal fun energy(
     power: Flow<Power?>,
     currentTimeMillis: () -> Long = { System.currentTimeMillis() },
 ): Flow<Energy> {
-
     return power
         .scan(PowerStatus.empty()) { status, powerValue ->
             status.apply(currentTimeMillis(), powerValue)
