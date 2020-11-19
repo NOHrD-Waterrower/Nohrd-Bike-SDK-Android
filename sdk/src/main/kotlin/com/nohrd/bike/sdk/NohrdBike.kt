@@ -44,6 +44,15 @@ class NohrdBike internal constructor(
         fun onCadence(cadence: Cadence?)
 
         /**
+         * Invoked when energy was expended.
+         *
+         * Energy values denote the energy expended since the
+         * last value. For a total expended energy value, these
+         * values will need to be accumulated.
+         */
+        fun onEnergy(energy: Energy)
+
+        /**
          * Invoked when the power changes.
          *
          * @param power `null` when there has been no data for a significant time.
@@ -110,7 +119,10 @@ class NohrdBike internal constructor(
 
             val power = power(flywheelFrequency, resistance)
 
+            val energy = energy(power)
+
             launch { collectCadence(cadence) }
+            launch { collectEnergy(energy) }
             launch { collectPower(power) }
             launch { collectResistance(resistance) }
         }
@@ -120,6 +132,14 @@ class NohrdBike internal constructor(
         cadence.collect { value ->
             listeners.forEach {
                 it.onCadence(value)
+            }
+        }
+    }
+
+    private suspend fun collectEnergy(energy: Flow<Energy>) {
+        energy.collect { value ->
+            listeners.forEach {
+                it.onEnergy(value)
             }
         }
     }
