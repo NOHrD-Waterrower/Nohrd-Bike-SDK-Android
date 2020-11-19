@@ -14,10 +14,12 @@ buildscript {
 
         classpath "com.github.ben-manes:gradle-versions-plugin:0.36.0"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
+        classpath "com.dropbox.affectedmoduledetector:affectedmoduledetector:0.1.0"
     }
 }
 
 apply from: "${rootProject.projectDir.absolutePath}/.ops/dependencyUpdates.gradle"
+apply plugin: "com.dropbox.affectedmoduledetector"
 
 allprojects {
     apply plugin: "io.spring.dependency-management"

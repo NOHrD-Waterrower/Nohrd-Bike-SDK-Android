@@ -84,6 +84,21 @@ class NohrdBikeTest {
         }
 
         @Test
+        fun `a resistance and two speed packets invokes callback with energy`() {
+            /* Given */
+            bike.registerListener(listener)
+
+            /* When */
+            bytesReader.append(SpeedPacket(400))
+            bytesReader.append(ResistancePacket(500))
+            Thread.sleep(10)
+            bytesReader.append(SpeedPacket(400))
+
+            /* Then */
+            verify(listener, timeout(1000).atLeastOnce()).onEnergy(any())
+        }
+
+        @Test
         fun `a speed and a resistance packet invokes callback with power`() {
             /* Given */
             bike.registerListener(listener)
