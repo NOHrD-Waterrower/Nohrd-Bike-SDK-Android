@@ -1,6 +1,6 @@
 package com.nohrd.bike.sdk
 
-data class Cadence(val value: Double)
+public data class Cadence(val value: Double)
 
-val Double.rpm get() = Cadence(this)
-val Int.rpm get() = Cadence(this.toDouble())
+public val Double.rpm: Cadence get() = Cadence(this)
+public val Int.rpm: Cadence get() = Cadence(this.toDouble())

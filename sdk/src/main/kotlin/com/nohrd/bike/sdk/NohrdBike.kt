@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
  * after which computation starts automatically.
  * When all [Listener] instance are gone computation stops.
  */
-class NohrdBike internal constructor(
+public class NohrdBike internal constructor(
     private val bytesReader: BytesReader,
     private val calibration: Calibration,
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO),
@@ -33,7 +33,7 @@ class NohrdBike internal constructor(
      * An interface that needs to be implemented for parties
      * that are interested in cycling data.
      */
-    interface Listener {
+    public interface Listener {
 
         /**
          * Invoked when the cadence changes.
@@ -41,7 +41,7 @@ class NohrdBike internal constructor(
          * @param cadence `null` when there has been no data
          * for a significant time.
          */
-        fun onCadence(cadence: Cadence?)
+        public fun onCadence(cadence: Cadence?)
 
         /**
          * Invoked when energy was expended.
@@ -50,14 +50,14 @@ class NohrdBike internal constructor(
          * last value. For a total expended energy value, these
          * values will need to be accumulated.
          */
-        fun onEnergy(energy: Energy)
+        public fun onEnergy(energy: Energy)
 
         /**
          * Invoked when the power changes.
          *
          * @param power `null` when there has been no data for a significant time.
          */
-        fun onPower(power: Power?)
+        public fun onPower(power: Power?)
 
         /**
          * Invoked when the resistance changes.
@@ -65,7 +65,7 @@ class NohrdBike internal constructor(
          * @param resistance A corrected resistance value, based
          * on the calibration.
          */
-        fun onResistance(resistance: Resistance)
+        public fun onResistance(resistance: Resistance)
     }
 
     private var listeners = listOf<Listener>()
@@ -81,7 +81,7 @@ class NohrdBike internal constructor(
      * is not interested anymore. When all listeners are gone, computation
      * is stopped.
      */
-    fun registerListener(listener: Listener): Cancellable {
+    public fun registerListener(listener: Listener): Cancellable {
         listeners += listener
         if (listeners.size == 1) {
             start()
