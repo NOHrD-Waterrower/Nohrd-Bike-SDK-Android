@@ -6,7 +6,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "com.android.tools.build:gradle:4.2.0-alpha16"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         classpath "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
@@ -31,6 +31,23 @@ allprojects {
         mavenCentral()
         google()
         jcenter()
+    }
+
+    afterEvaluate {
+        if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
+            android {
+                compileSdkVersion(30)
+                defaultConfig {
+                    minSdkVersion(21)
+                    targetSdkVersion(30)
+                }
+
+                compileOptions {
+                    sourceCompatibility 1.8
+                    targetCompatibility 1.8
+                }
+            }
+        }
     }
 }
 
