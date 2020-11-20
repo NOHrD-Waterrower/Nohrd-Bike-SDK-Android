@@ -12,12 +12,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
 import com.nohrd.bike.sdk.ble.BikeService
 import com.nohrd.bike.sdk.ble.sample.nohrdBikeBleSampleApplication
+import com.nohrd.bike.sdk.ble.sample.ui.Device
+import com.nohrd.bike.sdk.ble.sample.ui.devicedetails.DeviceDetailsActivity
 import com.nohrd.bike.sdk.ble.sample.ui.theming.AppTheme
 import com.nohrd.bike.sdk.ble.sample.util.Cancellable
 
 class DevicesActivity : AppCompatActivity() {
 
-    private var devices by mutableStateOf(emptyList<Device>())
+    private var devices by mutableStateOf(
+        listOf<Device>(
+            Device(
+                "a",
+                "My test device"
+            )
+        )
+    )
 
     private var scanCancellable: Cancellable? = null
         set(value) {
@@ -32,7 +41,9 @@ class DevicesActivity : AppCompatActivity() {
             AppTheme {
                 DevicesView(
                     devices,
-                    onDeviceClick = { println("Clicked $it") }
+                    onDeviceClick = { device ->
+                        startActivity(DeviceDetailsActivity.intent(this, device))
+                    }
                 )
             }
         }

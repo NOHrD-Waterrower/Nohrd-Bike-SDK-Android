@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk.ble.sample.ui.devices
+package com.nohrd.bike.sdk.ble.sample.ui
 
 data class Device(
     val address: String,
