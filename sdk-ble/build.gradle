@@ -1,0 +1,12 @@
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+    kotlinOptions {
+        freeCompilerArgs += "-Xexplicit-api=strict"
+    }
+}
+
+dependencies {
+    api project(":sdk")
+}

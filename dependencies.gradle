@@ -1,6 +1,13 @@
+ext.composeVersion = "1.0.0-alpha07"
+
 dependencyManagement {
     dependencies {
+        dependency "androidx.appcompat:appcompat:1.2.0"
+        dependency "androidx.ui:ui-tooling:$composeVersion"
+
         dependency "app.cash.turbine:turbine:0.2.1"
+
+        dependency "com.google.android.material:material:1.2.1"
 
         dependency "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
