@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.ui.tooling.preview.Preview
+import com.nohrd.bike.sdk.ble.sample.ui.Device
 import com.nohrd.bike.sdk.ble.sample.ui.theming.AppTheme
 
 @Composable
