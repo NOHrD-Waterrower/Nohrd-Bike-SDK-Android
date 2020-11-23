@@ -6,4 +6,7 @@ import android.content.Context
 val Context.nohrdBikeBleSampleApplication: NohrdBikeBleSampleApplication
     get() = (applicationContext as NohrdBikeBleSampleApplication)
 
-class NohrdBikeBleSampleApplication : Application()
+class NohrdBikeBleSampleApplication : Application() {
+
+    val appComponent by lazy { AppComponent() }
+}

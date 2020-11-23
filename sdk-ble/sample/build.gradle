@@ -33,6 +33,8 @@ dependencies {
     api project(":sdk-ble")
 
     implementation "androidx.appcompat:appcompat"
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui"
     implementation "androidx.ui:ui-tooling"
     implementation "com.google.android.material:material"
 }
