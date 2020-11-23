@@ -13,7 +13,7 @@ import com.nohrd.bike.sdk.ble.sample.util.Cancellable
 import java.util.UUID
 
 class AndroidBleScanner(
-    private val bluetoothAdapter: BluetoothAdapter
+    private val bluetoothAdapter: BluetoothAdapter,
 ) {
 
     private val bluetoothLeScanner: BluetoothLeScanner? get() = bluetoothAdapter.bluetoothLeScanner
@@ -22,7 +22,7 @@ class AndroidBleScanner(
         val scanner = bluetoothLeScanner
         if (scanner == null) {
             e("AndroidBleScanner", "No BluetoothLeScanner available. Is bluetooth turned on?")
-            return Cancellable.cancellable { }
+            return Cancellable {}
         }
 
         if (serviceUuids != null) {
@@ -41,7 +41,7 @@ class AndroidBleScanner(
             listener
         )
 
-        return Cancellable.cancellable {
+        return Cancellable {
             if (serviceUuids != null) {
                 i("AndroidBleScanner", "Stopping scan for $serviceUuids")
             } else {
@@ -61,13 +61,10 @@ class AndroidBleScanner(
      */
     private class MyScanCallback(
         private val serviceUuids: Iterable<UUID>?,
-        private val callback: ScanCallback
+        private val callback: ScanCallback,
     ) : ScanCallback(), Cancellable {
 
         private var cancelled = false
-        override fun isCancelled(): Boolean {
-            return cancelled
-        }
 
         override fun cancel() {
             cancelled = true
