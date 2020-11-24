@@ -7,12 +7,20 @@ package com.nohrd.bike.sdk
 public interface BytesReader {
 
     /**
-     * Reads a number of bytes from the source machine and
-     * stores it in the supplied [buffer] array.
+     * Invoked by the SDK when it is interested in data.
      *
-     * This method should be blocking.
+     * Implementations should start reading bytes in this function,
+     * and stop reading when the SDK invokes the resulting [Cancellable].
      *
-     * @return the number of bytes read.
+     * @param callback A callback to notify the SDK of new data.
+     *
+     * @return A [Cancellable] that the SDK invokes when it is not
+     * interested in data anymore.
      */
-    public fun read(buffer: ByteArray): Int
+    public fun start(callback: Callback): Cancellable
+
+    public interface Callback {
+
+        public fun onBytesRead(byteArray: ByteArray)
+    }
 }

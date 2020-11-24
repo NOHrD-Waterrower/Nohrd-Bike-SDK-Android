@@ -4,25 +4,25 @@ import com.nohrd.bike.sdk.internal.protocol.ResistancePacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
 import java.lang.Thread.sleep
 import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 internal class TestBytesReader : BytesReader {
 
-    private val queue = LinkedBlockingQueue<ByteArray>()
-
-    override fun read(buffer: ByteArray): Int {
-        val bytes: ByteArray = queue.poll(100, TimeUnit.MILLISECONDS)
-            ?: return 0
-
-        System.arraycopy(bytes, 0, buffer, 0, bytes.size)
-        return bytes.size
+    private val callbacks = LinkedBlockingQueue<BytesReader.Callback>()
+    override fun start(callback: BytesReader.Callback): Cancellable {
+        callbacks += callback
+        return Cancellable {
+            callbacks -= callback
+        }
     }
 
     fun append(bytes: ByteArray) {
+        sleep(10)
         thread {
-            sleep(10) // To overcome thread switching delays
-            queue.add(bytes)
+            while (callbacks.isEmpty()) {
+                sleep(10) // To overcome thread switching delays
+            }
+            callbacks.forEach { it.onBytesRead(bytes) }
         }
     }
 
