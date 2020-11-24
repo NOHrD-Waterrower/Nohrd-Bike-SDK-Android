@@ -155,4 +155,17 @@ internal class ValueCalculatorTest {
         /* Then */
         expect(result).toBe(valueOf(13, 13))
     }
+
+    @Test
+    fun `negative binary values result in positive int values`() {
+        /* When */
+        val result = calculateValue(
+            0b0000,
+            0,
+            -63
+        )
+
+        /* Then */
+        expect(result).toBe(193)
+    }
 }

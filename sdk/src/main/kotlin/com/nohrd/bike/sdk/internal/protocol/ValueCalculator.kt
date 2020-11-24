@@ -19,15 +19,15 @@ internal object ValueCalculator {
         val correctedHighByte = when (flags.toInt() and 0xf) {
             0b0001, 0b0101, 0b0111 -> 10
             0b0010, 0b1000, 0b1001 -> 13
-            else -> highByte
+            else -> highByte.toInt() and 0xff
         }
 
         val correctedLowByte = when (flags.toInt() and 0xf) {
             0b0011, 0b0101, 0b1000 -> 10
             0b0100, 0b0111, 0b1001 -> 13
-            else -> lowByte
+            else -> lowByte.toInt() and 0xff
         }
 
-        return (correctedHighByte.toInt() shl 8) + correctedLowByte
+        return (correctedHighByte shl 8) + correctedLowByte
     }
 }
