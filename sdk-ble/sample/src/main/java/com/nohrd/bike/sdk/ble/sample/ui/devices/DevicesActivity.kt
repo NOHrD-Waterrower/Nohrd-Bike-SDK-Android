@@ -19,7 +19,14 @@ import com.nohrd.bike.sdk.ble.sample.util.Cancellable
 
 class DevicesActivity : AppCompatActivity() {
 
-    private var devices by mutableStateOf(listOf<Device>())
+    private var devices by mutableStateOf(
+        listOf<Device>(
+            Device(
+                "00:D0:56:F2:B5:12",
+                "fake"
+            )
+        )
+    )
 
     private var scanCancellable: Cancellable? = null
         set(value) {

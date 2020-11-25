@@ -4,31 +4,23 @@ import com.nohrd.bike.sdk.BikeDataListener
 import com.nohrd.bike.sdk.BytesReader
 import com.nohrd.bike.sdk.Calibration
 import com.nohrd.bike.sdk.NohrdBike
-import com.nohrd.bike.sdk.ResistanceMeasurement
-import com.nohrd.bike.sdk.ble.BikeCharacteristic
-import com.nohrd.bike.sdk.ble.BikeService
+import com.nohrd.bike.sdk.ResistanceMeasurementsListener
 import com.nohrd.bike.sdk.ble.sample.util.Cancellable
 
 class ConnectedNohrdBikeDevice(
     private val delegate: ConnectedBleDevice,
 ) {
 
-    fun bikeData(listener: BikeDataListener): Cancellable {
-        val bytesReader = BleBytesReader(delegate)
-        val bike = NohrdBike.create(bytesReader)
+    private val bike = NohrdBike.create(BleBytesReader(delegate))
 
-        // Start processing of bike data
-        val bikeCancellable = bike.bikeData(
-            Calibration(
-                ResistanceMeasurement(450),
-                ResistanceMeasurement(4000),
-            ),
-            listener
-        )
+    fun resistanceMeasurements(listener: ResistanceMeasurementsListener): Cancellable {
+        val cancellable = bike.resistanceMeasurements(listener)
+        return Cancellable { cancellable.cancel() }
+    }
 
-        return Cancellable {
-            bikeCancellable.cancel()
-        }
+    fun bikeData(calibration: Calibration, listener: BikeDataListener): Cancellable {
+        val cancellable = bike.bikeData(calibration, listener)
+        return Cancellable { cancellable.cancel() }
     }
 
     private class BleBytesReader(
@@ -36,15 +28,15 @@ class ConnectedNohrdBikeDevice(
     ) : BytesReader {
 
         override fun start(callback: BytesReader.Callback): com.nohrd.bike.sdk.Cancellable {
-            val bleCancellable = bleDevice.listen(
-                serviceUUID = BikeService.uuid,
-                characteristicUUID = BikeCharacteristic.uuid,
-            ) { bytes ->
-                callback.onBytesRead(bytes)
-            }
+            // val bleCancellable = bleDevice.listen(
+            //     serviceUUID = BikeService.uuid,
+            //     characteristicUUID = BikeCharacteristic.uuid,
+            // ) { bytes ->
+            //     callback.onBytesRead(bytes)
+            // }
 
             return com.nohrd.bike.sdk.Cancellable {
-                bleCancellable.cancel()
+                // bleCancellable.cancel()
             }
         }
     }
