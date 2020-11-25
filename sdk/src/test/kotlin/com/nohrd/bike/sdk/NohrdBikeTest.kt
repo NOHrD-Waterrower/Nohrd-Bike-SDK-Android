@@ -18,15 +18,16 @@ import org.junit.jupiter.api.Test
 internal class NohrdBikeTest {
 
     private val bytesReader = TestBytesReader()
-    private val listener = mock<NohrdBike.Listener>()
+    private val listener = mock<BikeDataListener>()
+
+    private val calibration = Calibration(
+        lowValue = ResistanceMeasurement(100),
+        highValue = ResistanceMeasurement(900)
+    )
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val bike = NohrdBike(
         bytesReader,
-        Calibration(
-            lowValue = ResistanceMeasurement(100),
-            highValue = ResistanceMeasurement(900)
-        ),
         scope
     )
 
@@ -50,7 +51,7 @@ internal class NohrdBikeTest {
         @Test
         fun `a speed packet after cancelled listener doesn't invoke listener`() {
             /* Given */
-            val cancellable = bike.registerListener(listener)
+            val cancellable = bike.bikeData(calibration, listener)
             val inOrder = inOrder(listener)
 
             /* When */
@@ -69,12 +70,30 @@ internal class NohrdBikeTest {
     }
 
     @Nested
-    inner class `Callback invocation` {
+    inner class `Resistance measurements` {
+
+        private val listener = mock<ResistanceMeasurementsListener>()
+
+        @Test
+        fun `a resistance packet notifies listener with resistance measurement`() {
+            /* Given */
+            bike.resistanceMeasurements(listener)
+
+            /* When */
+            bytesReader.append(ResistancePacket(3))
+
+            /* Then */
+            verify(listener, timeout(1000)).onResistanceMeasurement(ResistanceMeasurement(3))
+        }
+    }
+
+    @Nested
+    inner class `Bike data` {
 
         @Test
         fun `a speed packet invokes callback with cadence`() {
             /* Given */
-            bike.registerListener(listener)
+            bike.bikeData(calibration, listener)
 
             /* When */
             bytesReader.append(SpeedPacket(400))
@@ -86,7 +105,7 @@ internal class NohrdBikeTest {
         @Test
         fun `a resistance and two speed packets invokes callback with distance`() {
             /* Given */
-            bike.registerListener(listener)
+            bike.bikeData(calibration, listener)
 
             /* When */
             bytesReader.append(SpeedPacket(400))
@@ -101,7 +120,7 @@ internal class NohrdBikeTest {
         @Test
         fun `a resistance and two speed packets invokes callback with energy`() {
             /* Given */
-            bike.registerListener(listener)
+            bike.bikeData(calibration, listener)
 
             /* When */
             bytesReader.append(SpeedPacket(400))
@@ -116,7 +135,7 @@ internal class NohrdBikeTest {
         @Test
         fun `a speed and a resistance packet invokes callback with power`() {
             /* Given */
-            bike.registerListener(listener)
+            bike.bikeData(calibration, listener)
 
             /* When */
             bytesReader.append(SpeedPacket(400))
@@ -129,7 +148,7 @@ internal class NohrdBikeTest {
         @Test
         fun `a resistance packet invokes callback with resistance`() {
             /* Given */
-            bike.registerListener(listener)
+            bike.bikeData(calibration, listener)
 
             /* When */
             bytesReader.append(ResistancePacket(500))
@@ -141,7 +160,7 @@ internal class NohrdBikeTest {
         @Test
         fun `a speed and resistance packet invokes callback with speed`() {
             /* Given */
-            bike.registerListener(listener)
+            bike.bikeData(calibration, listener)
 
             /* When */
             bytesReader.append(SpeedPacket(400))

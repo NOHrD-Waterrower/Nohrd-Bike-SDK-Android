@@ -1,27 +1,38 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.nohrd.bike.sdk.ble.sample.ui.devicedetails
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.nohrd.bike.sdk.Cadence
 import com.nohrd.bike.sdk.Distance
 import com.nohrd.bike.sdk.Power
 import com.nohrd.bike.sdk.Resistance
+import com.nohrd.bike.sdk.ResistanceMeasurement
 import com.nohrd.bike.sdk.Speed
 import com.nohrd.bike.sdk.ble.sample.ui.devicedetails.ConnectionStatus.Connected
 import com.nohrd.bike.sdk.ble.sample.ui.devicedetails.ConnectionStatus.Connecting
@@ -36,6 +47,8 @@ fun DeviceDetailsView(
     onUpClick: () -> Unit,
     connectClick: () -> Unit,
     disconnectClick: () -> Unit,
+    onSetLowCalibrationClick: (ResistanceMeasurement?) -> Unit,
+    onSetHighCalibrationClick: (ResistanceMeasurement?) -> Unit,
 ) {
     if (viewModel.deviceName == null) return
 
@@ -53,13 +66,17 @@ fun DeviceDetailsView(
                 disconnectClick = disconnectClick
             )
 
-            if (viewModel.connectionStatus == Connected) {
-                DataRow(title = "Cadence", value = "${viewModel.cadence?.value ?: "-"}/min")
-                DataRow(title = "Distance", value = "${viewModel.distance?.meters ?: "-"}m")
-                DataRow(title = "Energy", value = "${viewModel.energy?.joules ?: "-"}J")
-                DataRow(title = "Power", value = "${viewModel.power?.watts ?: "-"}W")
-                DataRow(title = "Resistance", value = "${viewModel.resistance?.value ?: "-"}")
-                DataRow(title = "Speed", value = "${viewModel.speed?.metersPerSecond ?: "-"}m/s")
+            AnimatedVisibility(visible = viewModel.connectionStatus == Connected) {
+                CalibrationRow(
+                    viewModel.resistanceMeasurement,
+                    viewModel.calibrationStatus,
+                    onSetLowCalibrationClick,
+                    onSetHighCalibrationClick
+                )
+            }
+
+            AnimatedVisibility(visible = viewModel.calibrationStatus.lowValue != null && viewModel.calibrationStatus.highValue != null) {
+                BikeData(viewModel)
             }
         }
     }
@@ -135,6 +152,50 @@ private fun DisconnectButton(disconnectClick: () -> Unit) {
 }
 
 @Composable
+private fun CalibrationRow(
+    resistanceMeasurement: ResistanceMeasurement?,
+    calibrationStatus: CalibrationStatus,
+    onSetLowCalibrationClick: (ResistanceMeasurement?) -> Unit,
+    onSetHighCalibrationClick: (ResistanceMeasurement?) -> Unit,
+) {
+    Column {
+        Divider()
+        DataRow(title = "Resistance measurement", value = "${resistanceMeasurement?.value ?: "-"}")
+
+        Row(modifier = Modifier.padding(8.dp)) {
+            Text("Low")
+            AnimatedVisibility(visible = calibrationStatus.lowValue != null) {
+                Text("(${calibrationStatus.lowValue?.value})")
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            TextButton(onClick = { onSetLowCalibrationClick(resistanceMeasurement) }) { Text(text = "Set") }
+        }
+
+        Row(modifier = Modifier.padding(8.dp)) {
+            Text("High")
+            AnimatedVisibility(visible = calibrationStatus.highValue != null) {
+                Text("(${calibrationStatus.highValue?.value})")
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            TextButton(onClick = { onSetHighCalibrationClick(resistanceMeasurement) }) { Text(text = "Set") }
+        }
+    }
+}
+
+@Composable
+private fun BikeData(viewModel: DeviceDetailsViewModel) {
+    Column {
+        Divider()
+        DataRow(title = "Cadence", value = "${viewModel.cadence?.value ?: "-"}/min")
+        DataRow(title = "Distance", value = "${viewModel.distance?.meters ?: "-"}m")
+        DataRow(title = "Energy", value = "${viewModel.energy?.joules ?: "-"}J")
+        DataRow(title = "Power", value = "${viewModel.power?.watts ?: "-"}W")
+        DataRow(title = "Resistance", value = "${viewModel.resistance?.value ?: "-"}")
+        DataRow(title = "Speed", value = "${viewModel.speed?.metersPerSecond ?: "-"}m/s")
+    }
+}
+
+@Composable
 private fun DataRow(
     title: String,
     value: Any?,
@@ -152,21 +213,56 @@ private fun DataRow(
 @Preview
 @Composable
 fun DeviceDetailsViewPreview() {
-    AppTheme {
-        DeviceDetailsView(
-            DeviceDetailsViewModel(
-                deviceName = "NOHrD Bike",
-                connectionStatus = Connected,
-                cadence = Cadence(20.0),
-                energy = 200.joules,
-                distance = Distance(231 * 1000.0),
-                power = Power(300.0),
-                resistance = Resistance.from(.4f),
-                speed = Speed(5.4)
+    var viewModel by mutableStateOf(
+        DeviceDetailsViewModel(
+            deviceName = "NOHrD Bike",
+            connectionStatus = Disconnected,
+            calibrationStatus = CalibrationStatus(
+                lowValue = null,
+                highValue = null
             ),
-            onUpClick = { println("Up clicked") },
-            connectClick = { println("Connect clicked") },
-            disconnectClick = { println("Disconnect clicked") }
+            resistanceMeasurement = ResistanceMeasurement(50),
+            cadence = Cadence(20.0),
+            energy = 200.joules,
+            distance = Distance(231 * 1000.0),
+            power = Power(300.0),
+            resistance = Resistance.from(.4f),
+            speed = Speed(5.4)
         )
+    )
+
+    AppTheme {
+        Surface(color = Color.White) {
+            DeviceDetailsView(
+                viewModel,
+                onUpClick = { println("Up clicked") },
+                connectClick = {
+                    viewModel = viewModel.copy(
+                        connectionStatus = Connected
+                    )
+                },
+                disconnectClick = {
+                    viewModel = viewModel.copy(
+                        connectionStatus = Disconnected,
+                        calibrationStatus = CalibrationStatus(null, null)
+                    )
+                },
+                onSetLowCalibrationClick = {
+                    viewModel = viewModel.copy(
+                        calibrationStatus = viewModel.calibrationStatus.copy(
+                            lowValue = ResistanceMeasurement(50)
+                        ),
+                        resistanceMeasurement = ResistanceMeasurement(3000)
+                    )
+                },
+                onSetHighCalibrationClick = {
+                    viewModel = viewModel.copy(
+                        calibrationStatus = viewModel.calibrationStatus.copy(
+                            highValue = ResistanceMeasurement(3000)
+                        ),
+                    )
+                }
+            )
+        }
     }
 }
