@@ -1,5 +1,6 @@
 package com.nohrd.bike.sdk.ble.sample.bluetooth.connection
 
+import com.nohrd.bike.sdk.BikeDataListener
 import com.nohrd.bike.sdk.BytesReader
 import com.nohrd.bike.sdk.Calibration
 import com.nohrd.bike.sdk.NohrdBike
@@ -12,19 +13,18 @@ class ConnectedNohrdBikeDevice(
     private val delegate: ConnectedBleDevice,
 ) {
 
-    fun bikeData(listener: NohrdBike.Listener): Cancellable {
+    fun bikeData(listener: BikeDataListener): Cancellable {
         val bytesReader = BleBytesReader(delegate)
-
-        val bike = NohrdBike.create(
-            bytesReader,
-            Calibration(
-                ResistanceMeasurement(100),
-                ResistanceMeasurement(2000),
-            )
-        )
+        val bike = NohrdBike.create(bytesReader)
 
         // Start processing of bike data
-        val bikeCancellable = bike.registerListener(listener)
+        val bikeCancellable = bike.bikeData(
+            Calibration(
+                ResistanceMeasurement(450),
+                ResistanceMeasurement(4000),
+            ),
+            listener
+        )
 
         return Cancellable {
             bikeCancellable.cancel()

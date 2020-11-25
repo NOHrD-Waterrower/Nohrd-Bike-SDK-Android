@@ -8,10 +8,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
+import com.nohrd.bike.sdk.BikeDataListener
 import com.nohrd.bike.sdk.Cadence
 import com.nohrd.bike.sdk.Distance
 import com.nohrd.bike.sdk.Energy
-import com.nohrd.bike.sdk.NohrdBike
 import com.nohrd.bike.sdk.Power
 import com.nohrd.bike.sdk.Resistance
 import com.nohrd.bike.sdk.Speed
@@ -117,7 +117,7 @@ class DeviceDetailsActivity : AppCompatActivity() {
 
         bikeDataListenerCancellable = ConnectedNohrdBikeDevice(connectionState.device)
             .bikeData(
-                object : NohrdBike.Listener {
+                object : BikeDataListener {
                     override fun onCadence(cadence: Cadence?) {
                         state = state.copy(cadence = cadence)
                     }
