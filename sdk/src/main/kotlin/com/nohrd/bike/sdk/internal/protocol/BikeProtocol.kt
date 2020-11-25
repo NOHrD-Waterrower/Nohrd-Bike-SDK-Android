@@ -49,7 +49,10 @@ internal class BikeProtocol {
             0b0001 -> SpeedPacket(value)
             0b0010 -> ResistancePacket(value)
             0b0011 -> BatteryPacket(value)
-            else -> error("Invalid packet type: 0b${Integer.toBinaryString(packetType)}")
+            else -> {
+                System.err.println("Invalid packet type: 0b${Integer.toBinaryString(packetType)}")
+                null
+            }
         }
     }
 

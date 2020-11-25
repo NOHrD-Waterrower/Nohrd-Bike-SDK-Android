@@ -1,7 +1,6 @@
 package com.nohrd.bike.sdk.internal.protocol
 
 import com.nhaarman.expect.expect
-import com.nhaarman.expect.expectErrorWithMessage
 import com.nohrd.bike.sdk.internal.toBe
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -374,18 +373,18 @@ internal class BikeProtocolTest {
     inner class `Unknown packet` {
 
         @Test
-        fun `an unknown packet throws an error`() {
-            /* Expect */
-            expectErrorWithMessage("Invalid packet type: 0b111") on {
-                /* When */
-                bikeProtocol.process(
-                    0b0111_0000, // Flags
-                    0, // High bits value
-                    0, // Low bits value
-                    BikeProtocol.carriageReturn,
-                    BikeProtocol.lineFeed,
-                )
-            }
+        fun `an unknown packet results in null`() {
+            /* When */
+            val result = bikeProtocol.process(
+                0b0111_0000, // Flags
+                0, // High bits value
+                0, // Low bits value
+                BikeProtocol.carriageReturn,
+                BikeProtocol.lineFeed,
+            )
+
+            /* Then */
+            expect(result).toBeEmpty()
         }
     }
 }
