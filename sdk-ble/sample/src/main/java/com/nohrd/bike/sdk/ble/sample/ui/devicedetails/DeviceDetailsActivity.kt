@@ -8,9 +8,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
+import com.nohrd.bike.sdk.Cadence
+import com.nohrd.bike.sdk.Distance
+import com.nohrd.bike.sdk.Energy
+import com.nohrd.bike.sdk.NohrdBike
+import com.nohrd.bike.sdk.Power
+import com.nohrd.bike.sdk.Resistance
+import com.nohrd.bike.sdk.Speed
 import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.BleConnection
 import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.BleConnectionFactory
 import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.BleConnectionState
+import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.ConnectedNohrdBikeDevice
 import com.nohrd.bike.sdk.ble.sample.ui.Device
 import com.nohrd.bike.sdk.ble.sample.ui.theming.AppTheme
 import com.nohrd.bike.sdk.ble.sample.util.Cancellable
@@ -29,6 +37,12 @@ class DeviceDetailsActivity : AppCompatActivity() {
         DeviceDetailsViewModel(
             deviceName = null,
             connectionStatus = ConnectionStatus.Disconnected,
+            cadence = null,
+            distance = null,
+            energy = null,
+            power = null,
+            resistance = null,
+            speed = null
         )
     )
 
@@ -38,6 +52,12 @@ class DeviceDetailsActivity : AppCompatActivity() {
     }
 
     private var connectionStateListenerCancellable: Cancellable? = null
+        set(value) {
+            field?.cancel()
+            field = value
+        }
+
+    private var bikeDataListenerCancellable: Cancellable? = null
         set(value) {
             field?.cancel()
             field = value
@@ -81,6 +101,50 @@ class DeviceDetailsActivity : AppCompatActivity() {
                 is BleConnectionState.Failed -> ConnectionStatus.Failed
             }
         )
+
+        if (connectionState !is BleConnectionState.Connected) {
+            bikeDataListenerCancellable = null
+            state = state.copy(
+                cadence = null,
+                distance = null,
+                energy = null,
+                power = null,
+                resistance = null,
+                speed = null
+            )
+            return
+        }
+
+        bikeDataListenerCancellable = ConnectedNohrdBikeDevice(connectionState.device)
+            .bikeData(
+                object : NohrdBike.Listener {
+                    override fun onCadence(cadence: Cadence?) {
+                        state = state.copy(cadence = cadence)
+                    }
+
+                    override fun onDistance(distance: Distance) {
+                        val millimeters = (state.distance?.millimeters ?: 0.0) + distance.millimeters
+                        state = state.copy(distance = Distance(millimeters))
+                    }
+
+                    override fun onEnergy(energy: Energy) {
+                        val joules = (state.energy?.joules ?: 0.0) + energy.joules
+                        state = state.copy(energy = Energy(joules))
+                    }
+
+                    override fun onPower(power: Power?) {
+                        state = state.copy(power = power)
+                    }
+
+                    override fun onResistance(resistance: Resistance) {
+                        state = state.copy(resistance = resistance)
+                    }
+
+                    override fun onSpeed(speed: Speed?) {
+                        state = state.copy(speed = speed)
+                    }
+                }
+            )
     }
 
     override fun onPause() {

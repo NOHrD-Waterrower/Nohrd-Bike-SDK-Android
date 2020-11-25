@@ -31,6 +31,17 @@ public class NohrdBike internal constructor(
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO),
 ) {
 
+    public companion object {
+
+        @JvmStatic
+        public fun create(
+            bytesReader: BytesReader,
+            calibration: Calibration,
+        ): NohrdBike {
+            return NohrdBike(bytesReader, calibration)
+        }
+    }
+
     /**
      * An interface that needs to be implemented for parties
      * that are interested in cycling data.
