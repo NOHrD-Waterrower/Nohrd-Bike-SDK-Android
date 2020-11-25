@@ -8,8 +8,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
+import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.BleConnection
+import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.BleConnectionFactory
+import com.nohrd.bike.sdk.ble.sample.bluetooth.connection.BleConnectionState
 import com.nohrd.bike.sdk.ble.sample.ui.Device
 import com.nohrd.bike.sdk.ble.sample.ui.theming.AppTheme
+import com.nohrd.bike.sdk.ble.sample.util.Cancellable
 
 class DeviceDetailsActivity : AppCompatActivity() {
 
@@ -28,6 +32,17 @@ class DeviceDetailsActivity : AppCompatActivity() {
         )
     )
 
+    private val connection by lazy {
+        BleConnectionFactory.from(this)
+            .createConnection(device.address)
+    }
+
+    private var connectionStateListenerCancellable: Cancellable? = null
+        set(value) {
+            field?.cancel()
+            field = value
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,11 +53,44 @@ class DeviceDetailsActivity : AppCompatActivity() {
                 DeviceDetailsView(
                     state,
                     onUpClick = { finish() },
-                    connectClick = { },
-                    disconnectClick = { }
+                    connectClick = { connection.open() },
+                    disconnectClick = { connection.close() }
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        connectionStateListenerCancellable = connection.addConnectionStateListener(
+            object : BleConnection.ConnectionStateListener {
+                override fun onConnectionStateChanged(connectionState: BleConnectionState) {
+                    runOnUiThread { handle(connectionState) }
+                }
+            }
+        )
+    }
+
+    private fun handle(connectionState: BleConnectionState) {
+        state = state.copy(
+            connectionStatus = when (connectionState) {
+                is BleConnectionState.Disconnected -> ConnectionStatus.Disconnected
+                is BleConnectionState.Connecting -> ConnectionStatus.Connecting
+                is BleConnectionState.Connected -> ConnectionStatus.Connected
+                is BleConnectionState.Failed -> ConnectionStatus.Failed
+            }
+        )
+    }
+
+    override fun onPause() {
+        connectionStateListenerCancellable = null
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        connection.close()
+        super.onDestroy()
     }
 
     companion object {
