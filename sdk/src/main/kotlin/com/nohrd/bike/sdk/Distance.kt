@@ -1,13 +1,20 @@
 package com.nohrd.bike.sdk
 
-public data class Distance(
+@Suppress("DataClassPrivateConstructor")
+public data class Distance private constructor(
     val millimeters: Double,
 ) {
 
     val meters: Double get() = millimeters / 1000
+
+    public companion object {
+
+        @JvmStatic
+        public fun fromMillimeters(value: Number): Distance {
+            return Distance(value.toDouble())
+        }
+    }
 }
 
-internal val Double.millimeters: Distance get() = Distance(this)
-
-internal val Double.meters: Distance get() = (this * 1000).millimeters
-internal val Int.meters: Distance get() = toDouble().meters
+internal val Number.millimeters: Distance get() = Distance.fromMillimeters(this)
+internal val Number.meters: Distance get() = (this.toDouble() * 1000).millimeters

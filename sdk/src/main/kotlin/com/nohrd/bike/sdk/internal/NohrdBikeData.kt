@@ -10,7 +10,6 @@ import com.nohrd.bike.sdk.Energy
 import com.nohrd.bike.sdk.Power
 import com.nohrd.bike.sdk.Resistance
 import com.nohrd.bike.sdk.Speed
-import com.nohrd.bike.sdk.energy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

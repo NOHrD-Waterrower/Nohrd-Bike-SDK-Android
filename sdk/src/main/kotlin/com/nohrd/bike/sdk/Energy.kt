@@ -1,6 +1,15 @@
 package com.nohrd.bike.sdk
 
-public data class Energy(val joules: Double)
+@Suppress("DataClassPrivateConstructor")
+public data class Energy private constructor(val joules: Double) {
 
-public val Double.joules: Energy get() = Energy(this)
-public val Int.joules: Energy get() = toDouble().joules
+    public companion object {
+
+        @JvmStatic
+        public fun fromJoules(value: Number): Energy {
+            return Energy(value.toDouble())
+        }
+    }
+}
+
+internal val Number.joules: Energy get() = Energy.fromJoules(this)
