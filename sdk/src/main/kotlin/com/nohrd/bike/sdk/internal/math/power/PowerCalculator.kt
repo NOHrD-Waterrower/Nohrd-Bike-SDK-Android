@@ -4,6 +4,7 @@ import com.nohrd.bike.sdk.Power
 import com.nohrd.bike.sdk.Resistance
 import com.nohrd.bike.sdk.internal.BikeConfiguration.gearboxRatio
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
+import com.nohrd.bike.sdk.watts
 
 internal class PowerCalculator {
 
@@ -15,6 +16,6 @@ internal class PowerCalculator {
 
         val torque = TorqueCalculator.torque(resistance.value.toDouble(), crankFrequency)
         val powerWatts = torque * (2 * Math.PI * crankFrequency)
-        return Power(powerWatts)
+        return powerWatts.watts
     }
 }

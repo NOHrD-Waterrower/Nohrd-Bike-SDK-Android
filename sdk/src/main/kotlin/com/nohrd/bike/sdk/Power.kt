@@ -1,6 +1,15 @@
 package com.nohrd.bike.sdk
 
-public data class Power(val watts: Double)
+@Suppress("DataClassPrivateConstructor")
+public data class Power private constructor(val watts: Double) {
 
-public inline val Double.watts: Power get() = Power(this)
-public inline val Int.watts: Power get() = toDouble().watts
+    public companion object {
+
+        @JvmStatic
+        public fun fromWatts(value: Number): Power {
+            return Power(value.toDouble())
+        }
+    }
+}
+
+internal inline val Number.watts: Power get() = Power.fromWatts(this)

@@ -174,12 +174,12 @@ class DeviceDetailsActivity : AppCompatActivity() {
 
                 override fun onDistance(distance: Distance) {
                     val millimeters = (state.distance?.millimeters ?: 0.0) + distance.millimeters
-                    state = state.copy(distance = Distance(millimeters))
+                    state = state.copy(distance = Distance.fromMillimeters(millimeters))
                 }
 
                 override fun onEnergy(energy: Energy) {
                     val joules = (state.energy?.joules ?: 0.0) + energy.joules
-                    state = state.copy(energy = Energy(joules))
+                    state = state.copy(energy = Energy.fromJoules(joules))
                 }
 
                 override fun onPower(power: Power?) {

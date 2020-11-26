@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.nohrd.bike.sdk.Cadence
 import com.nohrd.bike.sdk.Distance
+import com.nohrd.bike.sdk.Energy
 import com.nohrd.bike.sdk.Power
 import com.nohrd.bike.sdk.Resistance
 import com.nohrd.bike.sdk.ResistanceMeasurement
@@ -39,7 +40,6 @@ import com.nohrd.bike.sdk.ble.sample.ui.devicedetails.ConnectionStatus.Connectin
 import com.nohrd.bike.sdk.ble.sample.ui.devicedetails.ConnectionStatus.Disconnected
 import com.nohrd.bike.sdk.ble.sample.ui.devicedetails.ConnectionStatus.Failed
 import com.nohrd.bike.sdk.ble.sample.ui.theming.AppTheme
-import com.nohrd.bike.sdk.joules
 
 @Composable
 fun DeviceDetailsView(
@@ -223,11 +223,11 @@ fun DeviceDetailsViewPreview() {
             ),
             resistanceMeasurement = ResistanceMeasurement(50),
             cadence = Cadence(20.0),
-            energy = 200.joules,
-            distance = Distance(231 * 1000.0),
-            power = Power(300.0),
+            energy = Energy.fromJoules(200),
+            distance = Distance.fromMillimeters(231 * 1000.0),
+            power = Power.fromWatts(300.0),
             resistance = Resistance.from(.4f),
-            speed = Speed(5.4)
+            speed = Speed.fromMetersPerSecond(5.4)
         )
     )
 

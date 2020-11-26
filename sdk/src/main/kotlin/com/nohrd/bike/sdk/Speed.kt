@@ -1,6 +1,15 @@
 package com.nohrd.bike.sdk
 
-public data class Speed(val metersPerSecond: Double)
+@Suppress("DataClassPrivateConstructor")
+public data class Speed private constructor(val metersPerSecond: Double) {
 
-public val Double.metersPerSecond: Speed get() = Speed(this)
-public val Int.metersPerSecond: Speed get() = toDouble().metersPerSecond
+    public companion object {
+
+        @JvmStatic
+        public fun fromMetersPerSecond(value: Number): Speed {
+            return Speed(value.toDouble())
+        }
+    }
+}
+
+internal val Number.metersPerSecond: Speed get() = Speed.fromMetersPerSecond(this)
