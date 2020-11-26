@@ -1,7 +1,13 @@
-apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
+apply plugin: "java"
+apply plugin: "kotlin"
 
-android {
+apply plugin: "org.jetbrains.dokka"
+apply plugin: "org.gradle.maven-publish"
+apply plugin: "signing"
+
+apply from: "$rootDir/.ops/publishing.gradle"
+
+compileKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xexplicit-api=strict"
     }
