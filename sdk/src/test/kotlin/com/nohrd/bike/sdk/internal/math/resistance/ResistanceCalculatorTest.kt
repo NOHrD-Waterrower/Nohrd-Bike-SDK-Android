@@ -74,4 +74,21 @@ internal class ResistanceCalculatorTest {
         /* Then */
         expect(result).toBe(Resistance.from(100f))
     }
+
+    @Test
+    fun `equal low and high calibration results in 0 resistance`() {
+        /* Given */
+        val calculator = ResistanceCalculator(
+            Calibration(
+                lowValue = ResistanceMeasurement(100),
+                highValue = ResistanceMeasurement(100),
+            )
+        )
+
+        /* When */
+        val result = calculator.calculateResistance(ResistanceMeasurement(100))
+
+        /* Then */
+        expect(result).toBe(Resistance.from(0f))
+    }
 }

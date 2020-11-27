@@ -9,6 +9,8 @@ internal class ResistanceCalculator(
 ) {
 
     fun calculateResistance(resistanceMeasurement: ResistanceMeasurement): Resistance {
+        if (calibration.highValue == calibration.lowValue) return Resistance.from(0f)
+
         return Resistance.from(
             (resistanceMeasurement.value - calibration.lowValue.value)
                 .div((calibration.highValue.value - calibration.lowValue.value).toFloat())
