@@ -63,11 +63,6 @@ class DeviceDetailsActivity : AppCompatActivity() {
         }
 
     private var connectedDevice: ConnectedNohrdBikeDevice? = null
-        set(value) {
-            bikeDataListenerCancellable = null
-            resistanceMeasurementsListenerCancellable = null
-            field = value
-        }
 
     private var resistanceMeasurementsListenerCancellable: Cancellable? = null
         set(value) {
@@ -134,6 +129,9 @@ class DeviceDetailsActivity : AppCompatActivity() {
 
         if (connectionState !is BleConnectionState.Connected) {
             connectedDevice = null
+            resistanceMeasurementsListenerCancellable = null
+            bikeDataListenerCancellable = null
+
             state = state.copy(
                 cadence = null,
                 distance = null,
@@ -145,16 +143,15 @@ class DeviceDetailsActivity : AppCompatActivity() {
             return
         }
 
-        connectedDevice = ConnectedNohrdBikeDevice(connectionState.device)
-            .also { device ->
-                resistanceMeasurementsListenerCancellable = device.resistanceMeasurements(
-                    object : ResistanceMeasurementsListener {
-                        override fun onResistanceMeasurement(measurement: ResistanceMeasurement) {
-                            state = state.copy(resistanceMeasurement = measurement)
-                        }
-                    }
-                )
+        val device = ConnectedNohrdBikeDevice(connectionState.device)
+        resistanceMeasurementsListenerCancellable = device.resistanceMeasurements(
+            object : ResistanceMeasurementsListener {
+                override fun onResistanceMeasurement(measurement: ResistanceMeasurement) {
+                    state = state.copy(resistanceMeasurement = measurement)
+                }
             }
+        )
+        this.connectedDevice = device
     }
 
     private fun onCalibrationChange() {
@@ -199,6 +196,8 @@ class DeviceDetailsActivity : AppCompatActivity() {
 
     override fun onPause() {
         connectionStateListenerCancellable = null
+        resistanceMeasurementsListenerCancellable = null
+        bikeDataListenerCancellable = null
         super.onPause()
     }
 
