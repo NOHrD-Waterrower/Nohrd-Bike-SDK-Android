@@ -26,8 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.nohrd.bike.sdk.Cadence
 import com.nohrd.bike.sdk.Distance
 import com.nohrd.bike.sdk.Energy
@@ -91,7 +91,7 @@ private fun DeviceDetailsTopAppBar(
         title = { Text(deviceName) },
         navigationIcon = {
             IconButton(onClick = onUpClick) {
-                Icon(asset = Icons.Filled.ArrowBack)
+                Icon(imageVector = Icons.Filled.ArrowBack)
             }
         }
     )
