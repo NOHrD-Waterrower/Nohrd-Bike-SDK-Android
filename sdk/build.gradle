@@ -26,5 +26,5 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntime "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
