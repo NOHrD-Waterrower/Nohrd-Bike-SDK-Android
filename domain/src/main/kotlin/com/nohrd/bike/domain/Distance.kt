@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk
+package com.nohrd.bike.domain
 
 @Suppress("DataClassPrivateConstructor")
 public data class Distance private constructor(
@@ -15,6 +15,3 @@ public data class Distance private constructor(
         }
     }
 }
-
-internal val Number.millimeters: Distance get() = Distance.fromMillimeters(this)
-internal val Number.meters: Distance get() = (this.toDouble() * 1000).millimeters

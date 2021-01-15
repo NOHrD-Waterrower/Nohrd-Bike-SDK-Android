@@ -1,8 +1,7 @@
 package com.nohrd.bike.sdk.internal
 
-import com.nohrd.bike.sdk.Distance
-import com.nohrd.bike.sdk.Speed
-import com.nohrd.bike.sdk.meters
+import com.nohrd.bike.domain.Distance
+import com.nohrd.bike.domain.Speed
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map

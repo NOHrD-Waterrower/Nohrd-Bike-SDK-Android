@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk
+package com.nohrd.bike.domain
 
 @Suppress("DataClassPrivateConstructor")
 public data class Energy private constructor(val joules: Double) {

@@ -1,7 +1,7 @@
 package com.nohrd.bike.sdk.internal
 
 import app.cash.turbine.test
-import com.nohrd.bike.sdk.Resistance
+import com.nohrd.bike.domain.Resistance
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.revolutionsPerSecond
 import kotlinx.coroutines.flow.MutableSharedFlow

@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.timeout
 import com.nhaarman.mockitokotlin2.verify
+import com.nohrd.bike.domain.BikeDataListener
 import com.nohrd.bike.sdk.internal.protocol.ResistancePacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
 import kotlinx.coroutines.CoroutineScope

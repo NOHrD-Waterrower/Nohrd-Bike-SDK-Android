@@ -1,5 +1,7 @@
 package com.nohrd.bike.sdk
 
+import com.nohrd.bike.domain.Cancellable
+
 /**
  * Clients of Nohrd Bike Android SDK should implement this interface
  * to provide data from a Bike connection to the SDK.

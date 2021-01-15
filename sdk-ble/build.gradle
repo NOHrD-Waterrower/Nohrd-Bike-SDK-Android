@@ -15,4 +15,5 @@ compileKotlin {
 
 dependencies {
     api project(":sdk")
+    api project(":sdk-ftms")
 }

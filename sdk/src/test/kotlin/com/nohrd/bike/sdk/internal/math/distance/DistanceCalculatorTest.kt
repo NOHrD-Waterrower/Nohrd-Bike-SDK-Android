@@ -1,8 +1,8 @@
 package com.nohrd.bike.sdk.internal.math.distance
 
 import com.nhaarman.expect.expect
-import com.nohrd.bike.sdk.meters
-import com.nohrd.bike.sdk.metersPerSecond
+import com.nohrd.bike.sdk.internal.meters
+import com.nohrd.bike.sdk.internal.metersPerSecond
 import org.junit.jupiter.api.Test
 import kotlin.time.seconds
 

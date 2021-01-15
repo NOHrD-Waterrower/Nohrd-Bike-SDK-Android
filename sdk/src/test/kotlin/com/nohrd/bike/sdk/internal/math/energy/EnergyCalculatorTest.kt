@@ -1,8 +1,8 @@
 package com.nohrd.bike.sdk.internal.math.energy
 
 import com.nhaarman.expect.expect
-import com.nohrd.bike.sdk.joules
-import com.nohrd.bike.sdk.watts
+import com.nohrd.bike.sdk.internal.joules
+import com.nohrd.bike.sdk.internal.watts
 import org.junit.jupiter.api.Test
 import kotlin.time.seconds
 

@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk
+package com.nohrd.bike.domain
 
 /**
  * Denotes the resistance level applied to the bike.
