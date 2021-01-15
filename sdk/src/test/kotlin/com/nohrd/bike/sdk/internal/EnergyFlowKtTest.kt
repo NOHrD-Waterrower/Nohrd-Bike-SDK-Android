@@ -2,9 +2,7 @@ package com.nohrd.bike.sdk.internal
 
 import app.cash.turbine.test
 import com.nhaarman.expect.expect
-import com.nohrd.bike.sdk.Power
-import com.nohrd.bike.sdk.joules
-import com.nohrd.bike.sdk.watts
+import com.nohrd.bike.domain.Power
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf

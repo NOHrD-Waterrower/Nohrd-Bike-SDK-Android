@@ -1,6 +1,6 @@
 package com.nohrd.bike.sdk.internal
 
-import com.nohrd.bike.sdk.Cadence
+import com.nohrd.bike.domain.Cadence
 import com.nohrd.bike.sdk.internal.math.cadence.CadenceCalculator
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
 import kotlinx.coroutines.flow.Flow

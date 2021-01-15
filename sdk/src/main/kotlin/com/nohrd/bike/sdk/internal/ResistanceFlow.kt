@@ -1,7 +1,7 @@
 package com.nohrd.bike.sdk.internal
 
+import com.nohrd.bike.domain.Resistance
 import com.nohrd.bike.sdk.Calibration
-import com.nohrd.bike.sdk.Resistance
 import com.nohrd.bike.sdk.ResistanceMeasurement
 import com.nohrd.bike.sdk.internal.math.resistance.ResistanceCalculator
 import com.nohrd.bike.sdk.internal.protocol.DataPacket

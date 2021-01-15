@@ -1,15 +1,15 @@
 package com.nohrd.bike.sdk.internal
 
-import com.nohrd.bike.sdk.BikeDataListener
+import com.nohrd.bike.domain.BikeDataListener
+import com.nohrd.bike.domain.Cadence
+import com.nohrd.bike.domain.Cancellable
+import com.nohrd.bike.domain.Distance
+import com.nohrd.bike.domain.Energy
+import com.nohrd.bike.domain.Power
+import com.nohrd.bike.domain.Resistance
+import com.nohrd.bike.domain.Speed
 import com.nohrd.bike.sdk.BytesReader
-import com.nohrd.bike.sdk.Cadence
 import com.nohrd.bike.sdk.Calibration
-import com.nohrd.bike.sdk.Cancellable
-import com.nohrd.bike.sdk.Distance
-import com.nohrd.bike.sdk.Energy
-import com.nohrd.bike.sdk.Power
-import com.nohrd.bike.sdk.Resistance
-import com.nohrd.bike.sdk.Speed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

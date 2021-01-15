@@ -1,7 +1,7 @@
 package com.nohrd.bike.sdk.internal
 
+import com.nohrd.bike.domain.Cancellable
 import com.nohrd.bike.sdk.BytesReader
-import com.nohrd.bike.sdk.Cancellable
 
 /**
  * A [BytesReader] that broadcasts data from a single

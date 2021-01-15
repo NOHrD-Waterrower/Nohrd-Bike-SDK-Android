@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk
+package com.nohrd.bike.domain
 
 @Suppress("DataClassPrivateConstructor")
 public data class Power private constructor(val watts: Double) {
@@ -11,5 +11,3 @@ public data class Power private constructor(val watts: Double) {
         }
     }
 }
-
-internal inline val Number.watts: Power get() = Power.fromWatts(this)

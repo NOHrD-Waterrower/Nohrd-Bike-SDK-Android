@@ -1,6 +1,9 @@
 rootProject.name = "Nohrd Bike Android SDK"
 
+include ":domain"
+
 include ":sdk"
+include ":sdk-ftms"
 
 include ":sdk-ble"
 include ":sdk-ble-sample"
