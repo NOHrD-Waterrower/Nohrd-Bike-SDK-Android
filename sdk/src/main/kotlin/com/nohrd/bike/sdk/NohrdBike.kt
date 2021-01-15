@@ -1,5 +1,7 @@
 package com.nohrd.bike.sdk
 
+import com.nohrd.bike.domain.BikeDataListener
+import com.nohrd.bike.domain.Cancellable
 import com.nohrd.bike.sdk.internal.NohrdBikeData
 import com.nohrd.bike.sdk.internal.ResistanceMeasurements
 import com.nohrd.bike.sdk.internal.SharingBytesReader

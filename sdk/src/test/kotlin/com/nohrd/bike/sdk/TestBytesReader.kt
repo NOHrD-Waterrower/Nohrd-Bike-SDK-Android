@@ -1,5 +1,6 @@
 package com.nohrd.bike.sdk
 
+import com.nohrd.bike.domain.Cancellable
 import com.nohrd.bike.sdk.internal.protocol.ResistancePacket
 import com.nohrd.bike.sdk.internal.protocol.SpeedPacket
 import java.lang.Thread.sleep

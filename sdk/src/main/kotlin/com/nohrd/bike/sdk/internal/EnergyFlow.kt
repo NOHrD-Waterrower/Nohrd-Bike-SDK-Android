@@ -1,8 +1,7 @@
 package com.nohrd.bike.sdk.internal
 
-import com.nohrd.bike.sdk.Energy
-import com.nohrd.bike.sdk.Power
-import com.nohrd.bike.sdk.joules
+import com.nohrd.bike.domain.Energy
+import com.nohrd.bike.domain.Power
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map

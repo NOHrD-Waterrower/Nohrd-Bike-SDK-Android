@@ -1,7 +1,7 @@
 package com.nohrd.bike.sdk.internal.math.speed
 
 import com.nhaarman.expect.expect
-import com.nohrd.bike.sdk.watts
+import com.nohrd.bike.sdk.internal.watts
 import org.junit.jupiter.api.Test
 
 internal class SpeedCalculatorTest {

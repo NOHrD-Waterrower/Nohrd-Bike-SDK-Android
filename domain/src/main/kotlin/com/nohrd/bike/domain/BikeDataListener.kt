@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk
+package com.nohrd.bike.domain
 
 /**
  * An interface that needs to be implemented for parties

@@ -1,9 +1,9 @@
 package com.nohrd.bike.sdk.internal.math.cadence
 
-import com.nohrd.bike.sdk.Cadence
+import com.nohrd.bike.domain.Cadence
 import com.nohrd.bike.sdk.internal.BikeConfiguration.gearboxRatio
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
-import com.nohrd.bike.sdk.rpm
+import com.nohrd.bike.sdk.internal.rpm
 
 /**
  * Calculates the cadence from flywheel frequency values.

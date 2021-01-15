@@ -2,9 +2,7 @@ package com.nohrd.bike.sdk.internal
 
 import app.cash.turbine.test
 import com.nhaarman.expect.expect
-import com.nohrd.bike.sdk.Speed
-import com.nohrd.bike.sdk.meters
-import com.nohrd.bike.sdk.metersPerSecond
+import com.nohrd.bike.domain.Speed
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -73,7 +71,7 @@ internal class DistanceFlowKtTest {
     }
 
     @Test
-    fun `distane is not accumulated`() = runBlocking {
+    fun `distance is not accumulated`() = runBlocking {
         /* Given */
         val speedFlow = MutableSharedFlow<Speed>()
 
