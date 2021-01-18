@@ -26,7 +26,8 @@ internal class ResistanceFlowKtTest {
             IndoorBikeData(
                 null,
                 null,
-                0.5f
+                0.5f,
+                null,
             )
         )
             .resistance()
@@ -42,12 +43,14 @@ internal class ResistanceFlowKtTest {
             IndoorBikeData(
                 null,
                 null,
-                0.5f
+                0.5f,
+                null,
             ),
             IndoorBikeData(
                 null,
                 null,
-                0.6f
+                0.6f,
+                null,
             )
         )
             .resistance()

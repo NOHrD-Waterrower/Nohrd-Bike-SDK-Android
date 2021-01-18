@@ -27,4 +27,9 @@ public data class IndoorBikeData(
      * Denotes the resistance level applied to the bike (a value in 0f..1f)
      */
     val resistanceLevel: Float,
+
+    /**
+     * The current heart rate value of the user, in beats per minute.
+     */
+    val heartRate: Int?,
 )
