@@ -38,6 +38,7 @@ public object IndoorBikeDataCharacteristicDecoder {
             instantaneousPowerWatts = instantaneousPower(bytes),
             instantaneousCadence = instantaneousCadence(bytes),
             resistanceLevel = resistanceLevel(bytes),
+            heartRate = heartRate(bytes),
         )
     }
 
@@ -74,6 +75,10 @@ public object IndoorBikeDataCharacteristicDecoder {
         val intValue = readIntValue(bytes, BikeDataResistanceLevelField) ?: return 0f
 
         return intValue / 2f
+    }
+
+    private fun heartRate(bytes: ByteArray): Int? {
+        return readIntValue(bytes, BikeDataHeartRateField)
     }
 
     private fun readIntValue(bytes: ByteArray, field: Field): Int? {
