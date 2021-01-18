@@ -3,13 +3,19 @@ package com.nohrd.bike.sdk.ftms
 import com.nohrd.bike.domain.BikeDataListener
 import com.nohrd.bike.domain.Cadence
 import com.nohrd.bike.domain.Cancellable
+import com.nohrd.bike.domain.Distance
+import com.nohrd.bike.domain.Energy
 import com.nohrd.bike.domain.Power
 import com.nohrd.bike.domain.Resistance
+import com.nohrd.bike.domain.Speed
 import com.nohrd.bike.sdk.ftms.internal.bikeData
 import com.nohrd.bike.sdk.ftms.internal.byteArrays
 import com.nohrd.bike.sdk.ftms.internal.cadence
+import com.nohrd.bike.sdk.ftms.internal.distance
+import com.nohrd.bike.sdk.ftms.internal.energy
 import com.nohrd.bike.sdk.ftms.internal.power
 import com.nohrd.bike.sdk.ftms.internal.resistance
+import com.nohrd.bike.sdk.ftms.internal.speed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -81,9 +87,18 @@ internal class FTMSBikeData(
             val resistance = bikeData.resistance()
                 .shareIn(scope, SharingStarted.WhileSubscribed())
 
+            val energy = energy(power)
+            val speed = speed(power)
+                .shareIn(scope, SharingStarted.WhileSubscribed())
+
+            val distance = distance(speed)
+
             launch { collectPower(power) }
             launch { collectCadence(cadence) }
             launch { collectResistance(resistance) }
+            launch { collectDistance(distance) }
+            launch { collectEnergy(energy) }
+            launch { collectSpeed(speed) }
         }
     }
 
@@ -107,6 +122,30 @@ internal class FTMSBikeData(
         resistance.collect { value ->
             listeners.forEach {
                 it.onResistance(value)
+            }
+        }
+    }
+
+    private suspend fun collectSpeed(speed: Flow<Speed?>) {
+        speed.collect { value ->
+            listeners.forEach {
+                it.onSpeed(value)
+            }
+        }
+    }
+
+    private suspend fun collectEnergy(energy: Flow<Energy>) {
+        energy.collect { value ->
+            listeners.forEach {
+                it.onEnergy(value)
+            }
+        }
+    }
+
+    private suspend fun collectDistance(distance: Flow<Distance>) {
+        distance.collect { value ->
+            listeners.forEach {
+                it.onDistance(value)
             }
         }
     }

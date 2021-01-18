@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk.internal
+package com.nohrd.bike.sdk.ftms.internal
 
 import app.cash.turbine.test
 import com.nhaarman.expect.expect
