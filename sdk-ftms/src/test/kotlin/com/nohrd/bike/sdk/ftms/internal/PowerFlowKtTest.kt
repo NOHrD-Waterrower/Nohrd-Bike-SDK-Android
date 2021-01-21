@@ -26,7 +26,8 @@ internal class PowerFlowKtTest {
             IndoorBikeData(
                 null,
                 null,
-                0f
+                0f,
+                null,
             )
         )
             .power()
@@ -42,7 +43,8 @@ internal class PowerFlowKtTest {
             IndoorBikeData(
                 100,
                 null,
-                0f
+                0f,
+                null,
             )
         )
             .power()
@@ -58,12 +60,14 @@ internal class PowerFlowKtTest {
             IndoorBikeData(
                 100,
                 null,
-                0f
+                0f,
+                null,
             ),
             IndoorBikeData(
                 200,
                 null,
-                0f
+                0f,
+                null,
             )
         )
             .power()

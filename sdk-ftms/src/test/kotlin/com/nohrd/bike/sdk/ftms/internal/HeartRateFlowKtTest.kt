@@ -2,26 +2,26 @@ package com.nohrd.bike.sdk.ftms.internal
 
 import app.cash.turbine.test
 import com.nhaarman.expect.expect
-import com.nohrd.bike.domain.Cadence
+import com.nohrd.bike.sdk.ftms.HeartRate
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
-internal class CadenceFlowKtTest {
+internal class HeartRateFlowKtTest {
 
     @Test
-    fun `no indoor bike data results in no cadence`() = runBlocking {
+    fun `no indoor bike data results in no heartrate`() = runBlocking {
         flowOf<IndoorBikeData>()
-            .cadence()
+            .heartRate()
             .test {
                 expectComplete()
             }
     }
 
     @Test
-    fun `empty indoor bike data results in no cadence`() = runBlocking {
+    fun `empty indoor bike data results in no heartrate`() = runBlocking {
         flowOf(
             IndoorBikeData(
                 null,
@@ -30,7 +30,7 @@ internal class CadenceFlowKtTest {
                 null,
             )
         )
-            .cadence()
+            .heartRate()
             .test {
                 expectItem().also { expect(it).toBeNull() }
                 expectComplete()
@@ -38,42 +38,42 @@ internal class CadenceFlowKtTest {
     }
 
     @Test
-    fun `a single indoor bike data event results in a cadence`() = runBlocking {
+    fun `a single indoor bike data event results in a heartrate`() = runBlocking {
         flowOf(
             IndoorBikeData(
                 null,
-                10.0,
-                0f,
                 null,
+                0f,
+                180,
             )
         )
-            .cadence()
+            .heartRate()
             .test {
-                expectItem().also { expect(it).toBe(Cadence(10.0)) }
+                expectItem().also { expect(it).toBe(HeartRate(180)) }
                 expectComplete()
             }
     }
 
     @Test
-    fun `multiple single indoor bike data events results in multiple cadence values`() = runBlocking {
+    fun `multiple single indoor bike data events results in multiple power values`() = runBlocking {
         flowOf(
             IndoorBikeData(
                 null,
-                10.0,
-                0f,
                 null,
+                0f,
+                180,
             ),
             IndoorBikeData(
                 null,
-                20.0,
-                0f,
                 null,
+                0f,
+                190,
             )
         )
-            .cadence()
+            .heartRate()
             .test {
-                expectItem().also { expect(it).toBe(Cadence(10.0)) }
-                expectItem().also { expect(it).toBe(Cadence(20.0)) }
+                expectItem().also { expect(it).toBe(HeartRate(180)) }
+                expectItem().also { expect(it).toBe(HeartRate(190)) }
                 expectComplete()
             }
     }

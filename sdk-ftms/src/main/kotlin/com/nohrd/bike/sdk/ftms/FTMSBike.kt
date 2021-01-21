@@ -44,4 +44,19 @@ public class FTMSBike internal constructor(
         val nohrdBikeData = FTMSBikeData(serviceReader, scope)
         return nohrdBikeData.registerListener(listener)
     }
+
+    /**
+     * Starts reading heart rate data.
+     *
+     * Callers must be careful to unregister the listener when not interested
+     * in the data anymore, which can be done by invoking the resulting
+     * [Cancellable].
+     *
+     * @return A [Cancellable] that must be invoked when the listener
+     * is not interested anymore.
+     */
+    public fun heartRate(listener: HeartRateListener): Cancellable {
+        val heartRateData = HeartRateData(serviceReader, scope)
+        return heartRateData.registerListener(listener)
+    }
 }
