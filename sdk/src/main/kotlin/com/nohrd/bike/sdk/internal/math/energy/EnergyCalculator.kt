@@ -1,8 +1,8 @@
 package com.nohrd.bike.sdk.internal.math.energy
 
-import com.nohrd.bike.sdk.Energy
-import com.nohrd.bike.sdk.Power
-import com.nohrd.bike.sdk.joules
+import com.nohrd.bike.domain.Energy
+import com.nohrd.bike.domain.Power
+import com.nohrd.bike.sdk.internal.joules
 import kotlin.time.Duration
 
 internal class EnergyCalculator {

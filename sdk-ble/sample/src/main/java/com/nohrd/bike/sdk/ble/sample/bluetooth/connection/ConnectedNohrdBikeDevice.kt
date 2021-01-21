@@ -1,6 +1,6 @@
 package com.nohrd.bike.sdk.ble.sample.bluetooth.connection
 
-import com.nohrd.bike.sdk.BikeDataListener
+import com.nohrd.bike.domain.BikeDataListener
 import com.nohrd.bike.sdk.BytesReader
 import com.nohrd.bike.sdk.Calibration
 import com.nohrd.bike.sdk.NohrdBike
@@ -29,7 +29,7 @@ class ConnectedNohrdBikeDevice(
         private val bleDevice: ConnectedBleDevice,
     ) : BytesReader {
 
-        override fun start(callback: BytesReader.Callback): com.nohrd.bike.sdk.Cancellable {
+        override fun start(callback: BytesReader.Callback): com.nohrd.bike.domain.Cancellable {
             val bleCancellable = bleDevice.listen(
                 serviceUUID = BikeService.uuid,
                 characteristicUUID = BikeCharacteristic.uuid,
@@ -37,7 +37,7 @@ class ConnectedNohrdBikeDevice(
                 callback.onBytesRead(bytes)
             }
 
-            return com.nohrd.bike.sdk.Cancellable {
+            return com.nohrd.bike.domain.Cancellable {
                 bleCancellable.cancel()
             }
         }

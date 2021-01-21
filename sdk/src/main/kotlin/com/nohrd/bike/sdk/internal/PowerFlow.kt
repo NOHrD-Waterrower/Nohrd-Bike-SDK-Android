@@ -1,7 +1,7 @@
 package com.nohrd.bike.sdk.internal
 
-import com.nohrd.bike.sdk.Power
-import com.nohrd.bike.sdk.Resistance
+import com.nohrd.bike.domain.Power
+import com.nohrd.bike.domain.Resistance
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.FlywheelFrequency
 import com.nohrd.bike.sdk.internal.math.power.PowerCalculator
 import kotlinx.coroutines.flow.Flow

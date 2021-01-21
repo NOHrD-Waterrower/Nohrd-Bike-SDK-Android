@@ -1,9 +1,9 @@
 package com.nohrd.bike.sdk.internal.math.power
 
 import com.nhaarman.expect.expect
-import com.nohrd.bike.sdk.Resistance
+import com.nohrd.bike.domain.Resistance
 import com.nohrd.bike.sdk.internal.math.flywheelfrequency.revolutionsPerSecond
-import com.nohrd.bike.sdk.watts
+import com.nohrd.bike.sdk.internal.watts
 import org.junit.jupiter.api.Test
 
 internal class PowerCalculatorTest {

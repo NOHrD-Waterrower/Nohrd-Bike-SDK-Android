@@ -1,4 +1,4 @@
-package com.nohrd.bike.sdk
+package com.nohrd.bike.domain
 
 @Suppress("DataClassPrivateConstructor")
 public data class Speed private constructor(val metersPerSecond: Double) {
@@ -11,5 +11,3 @@ public data class Speed private constructor(val metersPerSecond: Double) {
         }
     }
 }
-
-internal val Number.metersPerSecond: Speed get() = Speed.fromMetersPerSecond(this)

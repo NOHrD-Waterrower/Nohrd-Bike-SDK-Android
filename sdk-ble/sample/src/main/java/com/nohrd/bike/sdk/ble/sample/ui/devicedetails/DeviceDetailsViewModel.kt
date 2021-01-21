@@ -1,12 +1,12 @@
 package com.nohrd.bike.sdk.ble.sample.ui.devicedetails
 
-import com.nohrd.bike.sdk.Cadence
-import com.nohrd.bike.sdk.Distance
-import com.nohrd.bike.sdk.Energy
-import com.nohrd.bike.sdk.Power
-import com.nohrd.bike.sdk.Resistance
+import com.nohrd.bike.domain.Cadence
+import com.nohrd.bike.domain.Distance
+import com.nohrd.bike.domain.Energy
+import com.nohrd.bike.domain.Power
+import com.nohrd.bike.domain.Resistance
+import com.nohrd.bike.domain.Speed
 import com.nohrd.bike.sdk.ResistanceMeasurement
-import com.nohrd.bike.sdk.Speed
 
 data class DeviceDetailsViewModel(
     val deviceName: String?,
