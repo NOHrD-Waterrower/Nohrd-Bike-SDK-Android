@@ -73,8 +73,7 @@ public object IndoorBikeDataCharacteristicDecoder {
 
     private fun resistanceLevel(bytes: ByteArray): Float {
         val intValue = readIntValue(bytes, BikeDataResistanceLevelField) ?: return 0f
-
-        return intValue / 2f
+        return intValue / 200f
     }
 
     private fun heartRate(bytes: ByteArray): Int? {
