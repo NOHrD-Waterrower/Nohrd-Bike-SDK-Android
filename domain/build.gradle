@@ -1,0 +1,23 @@
+apply plugin: "java-library"
+apply plugin: "kotlin"
+
+apply plugin: "org.jetbrains.dokka"
+apply plugin: "org.gradle.maven-publish"
+apply plugin: "signing"
+
+apply from: "$rootDir/.ops/testing.gradle"
+apply from: "$rootDir/.ops/publishing.gradle"
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs += "-Xinline-classes"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xexplicit-api=strict"
+    }
+}
+
+dependencies {
+
+}

@@ -1,0 +1,40 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+
+repositories {
+    google()
+    mavenCentral()
+    jcenter()
+}
+
+android {
+    buildFeatures {
+        compose true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion composeVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+        useIR = true
+
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+    }
+}
+
+dependencies {
+    api project(":sdkv1-ble")
+
+    implementation "androidx.appcompat:appcompat"
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-tooling"
+    implementation "com.google.android.material:material"
+}

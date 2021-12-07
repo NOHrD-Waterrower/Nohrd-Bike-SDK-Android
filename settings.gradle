@@ -1,7 +1,12 @@
 rootProject.name = "Nohrd Bike Android SDK"
 
-include ":sdk"
+include ":domain"
 
-include ":sdk-ble"
-include ":sdk-ble-sample"
-project(":sdk-ble-sample").projectDir = file("sdk-ble/sample")
+include ":sdkv1"
+include ":sdkv2"
+
+include ":sdkv1-ble"
+include ":sdkv1-ble-sample"
+project(":sdkv1-ble-sample").projectDir = file("sdkv1-ble/sample")
+
+include ":sdkv2-ble"
