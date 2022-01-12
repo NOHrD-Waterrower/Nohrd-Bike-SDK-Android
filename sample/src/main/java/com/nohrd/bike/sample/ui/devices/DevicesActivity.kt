@@ -10,6 +10,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
+<<<<<<< HEAD
+=======
+import com.nohrd.bike.cyclingpower.ble.CyclingPowerService
+>>>>>>> e873375 (WIP modify sample to use cyclingpower)
 import com.nohrd.bike.sample.nohrdBikeBleSampleApplication
 import com.nohrd.bike.sample.ui.Device
 import com.nohrd.bike.sample.ui.devicedetails.DeviceDetailsActivity
@@ -47,7 +51,7 @@ class DevicesActivity : AppCompatActivity() {
 
         scanCancellable = nohrdBikeBleSampleApplication.appComponent.bleScanner
             .startScan(
-                listOf(BikeService.uuid),
+                listOf(CyclingPowerService.uuid),
                 object : ScanCallback() {
 
                     override fun onScanResult(callbackType: Int, result: ScanResult) {

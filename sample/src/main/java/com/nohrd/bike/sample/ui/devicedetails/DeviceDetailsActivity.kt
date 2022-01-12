@@ -9,15 +9,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
 import com.nohrd.bike.Cadence
-import com.nohrd.bike.Distance
-import com.nohrd.bike.Energy
 import com.nohrd.bike.Power
+<<<<<<< HEAD
 import com.nohrd.bike.Resistance
 import com.nohrd.bike.Speed
+=======
+import com.nohrd.bike.cyclingpower.CyclingPowerDataListener
+>>>>>>> e873375 (WIP modify sample to use cyclingpower)
 import com.nohrd.bike.sample.bluetooth.connection.BleConnection
 import com.nohrd.bike.sample.bluetooth.connection.BleConnectionFactory
 import com.nohrd.bike.sample.bluetooth.connection.BleConnectionState
-import com.nohrd.bike.sample.bluetooth.connection.ConnectedNohrdBikeDevice
+import com.nohrd.bike.sample.bluetooth.connection.ConnectedCyclingPowerDevice
 import com.nohrd.bike.sample.ui.Device
 import com.nohrd.bike.sample.ui.theming.AppTheme
 import com.nohrd.bike.sample.util.Cancellable
@@ -62,12 +64,20 @@ class DeviceDetailsActivity : AppCompatActivity() {
             field = value
         }
 
-    private var connectedDevice: ConnectedNohrdBikeDevice? = null
-
-    private var resistanceMeasurementsListenerCancellable: Cancellable? = null
+    private var connectedDevice: ConnectedCyclingPowerDevice? = null
         set(value) {
-            field?.cancel()
             field = value
+            bikeDataListenerCancellable = value?.powerData(
+                object : CyclingPowerDataListener {
+                    override fun onCadence(cadence: Cadence?) {
+                        state = state.copy(cadence = cadence)
+                    }
+
+                    override fun onPower(power: Power?) {
+                        state = state.copy(power = power)
+                    }
+                }
+            )
         }
 
     private var bikeDataListenerCancellable: Cancellable? = null
@@ -92,13 +102,11 @@ class DeviceDetailsActivity : AppCompatActivity() {
                         state = state.copy(
                             calibrationStatus = state.calibrationStatus.copy(lowValue = it)
                         )
-                        onCalibrationChange()
                     },
                     onSetHighCalibrationClick = {
                         state = state.copy(
                             calibrationStatus = state.calibrationStatus.copy(highValue = it)
                         )
-                        onCalibrationChange()
                     }
                 )
             }
@@ -129,7 +137,6 @@ class DeviceDetailsActivity : AppCompatActivity() {
 
         if (connectionState !is BleConnectionState.Connected) {
             connectedDevice = null
-            resistanceMeasurementsListenerCancellable = null
             bikeDataListenerCancellable = null
 
             state = state.copy(
@@ -143,60 +150,12 @@ class DeviceDetailsActivity : AppCompatActivity() {
             return
         }
 
-        val device = ConnectedNohrdBikeDevice(connectionState.device)
-        resistanceMeasurementsListenerCancellable = device.resistanceMeasurements(
-            object : ResistanceMeasurementsListener {
-                override fun onResistanceMeasurement(measurement: ResistanceMeasurement) {
-                    state = state.copy(resistanceMeasurement = measurement)
-                }
-            }
-        )
+        val device = ConnectedCyclingPowerDevice(connectionState.device)
         this.connectedDevice = device
-    }
-
-    private fun onCalibrationChange() {
-        val calibration = Calibration(
-            lowValue = state.calibrationStatus.lowValue ?: return,
-            highValue = state.calibrationStatus.highValue ?: return,
-        )
-
-        val device = connectedDevice ?: return
-
-        bikeDataListenerCancellable = device.bikeData(
-            calibration,
-            object : BikeDataListener {
-                override fun onCadence(cadence: Cadence?) {
-                    state = state.copy(cadence = cadence)
-                }
-
-                override fun onDistance(distance: Distance) {
-                    val millimeters = (state.distance?.millimeters ?: 0.0) + distance.millimeters
-                    state = state.copy(distance = Distance.fromMillimeters(millimeters))
-                }
-
-                override fun onEnergy(energy: Energy) {
-                    val joules = (state.energy?.joules ?: 0.0) + energy.joules
-                    state = state.copy(energy = Energy.fromJoules(joules))
-                }
-
-                override fun onPower(power: Power?) {
-                    state = state.copy(power = power)
-                }
-
-                override fun onResistance(resistance: Resistance) {
-                    state = state.copy(resistance = resistance)
-                }
-
-                override fun onSpeed(speed: Speed?) {
-                    state = state.copy(speed = speed)
-                }
-            }
-        )
     }
 
     override fun onPause() {
         connectionStateListenerCancellable = null
-        resistanceMeasurementsListenerCancellable = null
         bikeDataListenerCancellable = null
         super.onPause()
     }

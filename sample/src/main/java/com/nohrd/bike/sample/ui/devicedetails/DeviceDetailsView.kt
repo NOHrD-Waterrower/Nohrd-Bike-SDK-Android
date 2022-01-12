@@ -47,8 +47,8 @@ fun DeviceDetailsView(
     onUpClick: () -> Unit,
     connectClick: () -> Unit,
     disconnectClick: () -> Unit,
-    onSetLowCalibrationClick: (ResistanceMeasurement?) -> Unit,
-    onSetHighCalibrationClick: (ResistanceMeasurement?) -> Unit,
+    onSetLowCalibrationClick: ((ResistanceMeasurement?) -> Unit)?,
+    onSetHighCalibrationClick: ((ResistanceMeasurement?) -> Unit)?,
 ) {
     if (viewModel.deviceName == null) return
 
@@ -66,7 +66,7 @@ fun DeviceDetailsView(
                 disconnectClick = disconnectClick
             )
 
-            AnimatedVisibility(visible = viewModel.connectionStatus == Connected) {
+            AnimatedVisibility(visible = false) {
                 CalibrationRow(
                     viewModel.resistanceMeasurement,
                     viewModel.calibrationStatus,
@@ -75,7 +75,7 @@ fun DeviceDetailsView(
                 )
             }
 
-            AnimatedVisibility(visible = viewModel.calibrationStatus.lowValue != null && viewModel.calibrationStatus.highValue != null) {
+            AnimatedVisibility(visible = viewModel.connectionStatus == Connected) {
                 BikeData(viewModel)
             }
         }
@@ -155,8 +155,8 @@ private fun DisconnectButton(disconnectClick: () -> Unit) {
 private fun CalibrationRow(
     resistanceMeasurement: ResistanceMeasurement?,
     calibrationStatus: CalibrationStatus,
-    onSetLowCalibrationClick: (ResistanceMeasurement?) -> Unit,
-    onSetHighCalibrationClick: (ResistanceMeasurement?) -> Unit,
+    onSetLowCalibrationClick: ((ResistanceMeasurement?) -> Unit)?,
+    onSetHighCalibrationClick: ((ResistanceMeasurement?) -> Unit)?,
 ) {
     Column {
         Divider()
@@ -168,7 +168,7 @@ private fun CalibrationRow(
                 Text("(${calibrationStatus.lowValue?.value})")
             }
             Spacer(modifier = Modifier.weight(1f))
-            TextButton(onClick = { onSetLowCalibrationClick(resistanceMeasurement) }) { Text(text = "Set") }
+            TextButton(onClick = { onSetLowCalibrationClick?.invoke(resistanceMeasurement) }) { Text(text = "Set") }
         }
 
         Row(modifier = Modifier.padding(8.dp)) {
@@ -177,7 +177,7 @@ private fun CalibrationRow(
                 Text("(${calibrationStatus.highValue?.value})")
             }
             Spacer(modifier = Modifier.weight(1f))
-            TextButton(onClick = { onSetHighCalibrationClick(resistanceMeasurement) }) { Text(text = "Set") }
+            TextButton(onClick = { onSetHighCalibrationClick?.invoke(resistanceMeasurement) }) { Text(text = "Set") }
         }
     }
 }
