@@ -4,9 +4,10 @@ include ":domain"
 
 include ":sdkv1"
 include ":sdkv2"
+include ":cyclingpower"
 
 include ":sdkv1-ble"
-include ":sdkv1-ble-sample"
-project(":sdkv1-ble-sample").projectDir = file("sdkv1-ble/sample")
-
 include ":sdkv2-ble"
+
+include ":sample"
+project(":sample").projectDir = file("sample")
