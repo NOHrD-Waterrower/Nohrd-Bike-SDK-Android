@@ -10,12 +10,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.setContent
-import com.nohrd.bike.sdkv1.ble.BikeService
 import com.nohrd.bike.sample.nohrdBikeBleSampleApplication
 import com.nohrd.bike.sample.ui.Device
 import com.nohrd.bike.sample.ui.devicedetails.DeviceDetailsActivity
 import com.nohrd.bike.sample.ui.theming.AppTheme
 import com.nohrd.bike.sample.util.Cancellable
+import com.nohrd.bike.sdkv1.ble.BikeService
 
 class DevicesActivity : AppCompatActivity() {
 

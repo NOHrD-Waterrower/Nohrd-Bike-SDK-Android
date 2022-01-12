@@ -34,12 +34,12 @@ import com.nohrd.bike.Energy
 import com.nohrd.bike.Power
 import com.nohrd.bike.Resistance
 import com.nohrd.bike.Speed
-import com.nohrd.bike.sdkv1.ResistanceMeasurement
 import com.nohrd.bike.sample.ui.devicedetails.ConnectionStatus.Connected
 import com.nohrd.bike.sample.ui.devicedetails.ConnectionStatus.Connecting
 import com.nohrd.bike.sample.ui.devicedetails.ConnectionStatus.Disconnected
 import com.nohrd.bike.sample.ui.devicedetails.ConnectionStatus.Failed
 import com.nohrd.bike.sample.ui.theming.AppTheme
+import com.nohrd.bike.sdkv1.ResistanceMeasurement
 
 @Composable
 fun DeviceDetailsView(

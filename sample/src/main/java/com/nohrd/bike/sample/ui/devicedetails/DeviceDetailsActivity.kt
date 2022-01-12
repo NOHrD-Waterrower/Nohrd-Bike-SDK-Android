@@ -14,10 +14,6 @@ import com.nohrd.bike.Energy
 import com.nohrd.bike.Power
 import com.nohrd.bike.Resistance
 import com.nohrd.bike.Speed
-import com.nohrd.bike.sdkv1.BikeDataListener
-import com.nohrd.bike.sdkv1.Calibration
-import com.nohrd.bike.sdkv1.ResistanceMeasurement
-import com.nohrd.bike.sdkv1.ResistanceMeasurementsListener
 import com.nohrd.bike.sample.bluetooth.connection.BleConnection
 import com.nohrd.bike.sample.bluetooth.connection.BleConnectionFactory
 import com.nohrd.bike.sample.bluetooth.connection.BleConnectionState
@@ -25,6 +21,10 @@ import com.nohrd.bike.sample.bluetooth.connection.ConnectedNohrdBikeDevice
 import com.nohrd.bike.sample.ui.Device
 import com.nohrd.bike.sample.ui.theming.AppTheme
 import com.nohrd.bike.sample.util.Cancellable
+import com.nohrd.bike.sdkv1.BikeDataListener
+import com.nohrd.bike.sdkv1.Calibration
+import com.nohrd.bike.sdkv1.ResistanceMeasurement
+import com.nohrd.bike.sdkv1.ResistanceMeasurementsListener
 
 class DeviceDetailsActivity : AppCompatActivity() {
 
