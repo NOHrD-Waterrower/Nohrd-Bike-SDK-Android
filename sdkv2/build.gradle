@@ -20,12 +20,12 @@ compileKotlin {
 
 dependencies {
     api project(":domain")
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+    implementation KotlinX.coroutines.core
 
-    testImplementation "app.cash.turbine:turbine"
-    testImplementation "com.nhaarman:expect.kt"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test"
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation CashApp.turbine
+    testImplementation "com.nhaarman:expect.kt:_"
+    testImplementation Testing.mockito.kotlin
+    testImplementation KotlinX.coroutines.test
+    testImplementation Testing.junit.jupiter.api
+    testRuntimeOnly Testing.junit.jupiter.engine
 }

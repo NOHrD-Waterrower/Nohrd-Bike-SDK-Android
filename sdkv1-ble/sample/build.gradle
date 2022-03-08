@@ -18,7 +18,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion composeVersion
+        kotlinCompilerExtensionVersion "1.0.0-alpha10"
     }
 
     kotlinOptions {
@@ -32,9 +32,9 @@ android {
 dependencies {
     api project(":sdkv1-ble")
 
-    implementation "androidx.appcompat:appcompat"
-    implementation "androidx.compose.material:material"
-    implementation "androidx.compose.ui:ui"
-    implementation "androidx.compose.ui:ui-tooling"
-    implementation "com.google.android.material:material"
+    implementation AndroidX.appCompat
+    implementation AndroidX.compose.material
+    implementation AndroidX.compose.ui
+    implementation AndroidX.compose.ui.tooling
+    implementation Google.android.material
 }
