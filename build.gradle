@@ -6,27 +6,19 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath Android.tools.build.gradlePlugin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:_"
 
-        classpath "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
-        classpath "com.adarshr:gradle-test-logger-plugin:2.1.1"
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:_"
+        classpath "com.adarshr:gradle-test-logger-plugin:_"
 
-        classpath "com.github.ben-manes:gradle-versions-plugin:0.36.0"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
-
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:_"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:_"
     }
 }
 
-apply from: "${rootProject.projectDir.absolutePath}/.ops/dependencyUpdates.gradle"
-
 allprojects {
-    apply plugin: "io.spring.dependency-management"
-
     apply from: "$rootDir/.ops/git.gradle"
-    apply from: "$rootDir/dependencies.gradle"
 
     repositories {
         mavenCentral()
