@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 internal class SpeedCalculatorTest {
 
-    private val calculator = SpeedCalculator()
+    private val calculator = SpeedCalculator
 
     @Test
     fun `zero power results in 0 speed`() {

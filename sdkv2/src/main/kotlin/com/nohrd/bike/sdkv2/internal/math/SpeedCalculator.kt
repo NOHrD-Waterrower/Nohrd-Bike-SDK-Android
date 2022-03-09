@@ -1,10 +1,12 @@
+@file:Suppress("SameParameterValue")
+
 package com.nohrd.bike.sdkv2.internal.math
 
 import com.nohrd.bike.Power
 import com.nohrd.bike.Speed
 import com.nohrd.bike.sdkv2.internal.metersPerSecond
 
-internal class SpeedCalculator {
+internal object SpeedCalculator {
 
     fun calculateSpeed(power: Power): Speed {
         val airDensity = (1.293 - 0.00426 * temperatureCelsius) * Math.exp(-elevationMeters / 7000.0)
@@ -32,15 +34,12 @@ internal class SpeedCalculator {
         return 0.0 // failed to converge
     }
 
-    private companion object {
-
-        /* Details of environment we're using to calculate the progress */
-        private const val riderWeightKilograms = 70
-        private const val bikeWeightKilograms = 9
-        private const val rollingResistance = 0.005
-        private const val frontalArea = 0.388
-        private const val temperatureCelsius = 25
-        private const val elevationMeters = 100
-        private const val transVelocityConstant = 0.95 // Even the original source of these calculations is not sure what this is, but it is a required constant
-    }
+    /* Details of environment we're using to calculate the progress */
+    private const val riderWeightKilograms = 70
+    private const val bikeWeightKilograms = 9
+    private const val rollingResistance = 0.005
+    private const val frontalArea = 0.388
+    private const val temperatureCelsius = 25
+    private const val elevationMeters = 100
+    private const val transVelocityConstant = 0.95 // Even the original source of these calculations is not sure what this is, but it is a required constant
 }
