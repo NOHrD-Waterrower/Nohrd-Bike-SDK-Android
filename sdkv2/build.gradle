@@ -12,20 +12,16 @@ compileKotlin {
     kotlinOptions {
         freeCompilerArgs += "-Xinline-classes"
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-        freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
-        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
         freeCompilerArgs += "-Xexplicit-api=strict"
     }
 }
 
 dependencies {
     api project(":domain")
-    implementation KotlinX.coroutines.core
 
     testImplementation CashApp.turbine
     testImplementation "com.nhaarman:expect.kt:_"
     testImplementation Testing.mockito.kotlin
-    testImplementation KotlinX.coroutines.test
     testImplementation Testing.junit.jupiter.api
     testRuntimeOnly Testing.junit.jupiter.engine
 }

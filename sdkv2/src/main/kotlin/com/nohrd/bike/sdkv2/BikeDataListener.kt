@@ -19,7 +19,7 @@ public interface BikeDataListener {
      * @param cadence `null` when there has been no data
      * for a significant time.
      */
-    public fun onCadence(cadence: Cadence?)
+    public fun onCadenceUpdate(cadence: Cadence?)
 
     /**
      * Invoked when given [distance] was traveled.
@@ -27,7 +27,7 @@ public interface BikeDataListener {
      * Distance values denote the distance traveled since the last value.
      * For total traveled distance, these values will need to be accumulated.
      */
-    public fun onDistance(distance: Distance)
+    public fun onDistanceUpdate(distance: Distance)
 
     /**
      * Invoked when energy was expended.
@@ -36,14 +36,14 @@ public interface BikeDataListener {
      * last value. For a total expended energy value, these
      * values will need to be accumulated.
      */
-    public fun onEnergy(energy: Energy)
+    public fun onEnergyUpdate(energy: Energy)
 
     /**
      * Invoked when the power changes.
      *
      * @param power `null` when there has been no data for a significant time.
      */
-    public fun onPower(power: Power?)
+    public fun onPowerUpdate(power: Power?)
 
     /**
      * Invoked when the resistance changes.
@@ -51,10 +51,13 @@ public interface BikeDataListener {
      * @param resistance A corrected resistance value, based
      * on the calibration.
      */
-    public fun onResistance(resistance: Resistance)
+    public fun onResistanceUpdate(resistance: Resistance)
 
     /**
      * Invoked when the speed changes.
      */
-    public fun onSpeed(speed: Speed?)
+    public fun onSpeedUpdate(speed: Speed?)
+
+    /** Invoked when the heart rate value updates. */
+    public fun onHeartRateUpdate(heartRate: HeartRate?)
 }
